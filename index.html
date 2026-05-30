@@ -6,12 +6,12 @@
     <title>Curtain Call Archive</title>
     <style>
         /* ==========================================
-           1. 전체 레이아웃 & 검정+빨강 테마 스타일
+           1. 전체 레이아웃 & 테마 (딥 블랙)
            ========================================== */
         body {
             margin: 0;
             padding: 0;
-            background-color: #0a0a0a; /* 깊은 검은색 배경 */
+            background-color: #0d0d0d; /* 완전한 암전 상태의 블랙 */
             font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
             color: #ffffff;
             overflow-x: hidden;
@@ -24,7 +24,7 @@
         }
 
         /* ==========================================
-           2. 무대 커튼 (Curtain) 애니메이션 연출
+           2. 실제 천 느낌의 입체 무대 커튼 (Curtain) 연출
            ========================================== */
         .curtain-container {
             position: fixed;
@@ -34,162 +34,156 @@
             height: 100%;
             display: flex;
             z-index: 5;
-            pointer-events: none; /* 커튼 뒤의 버튼 클릭 방지 */
-            transition: all 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+            pointer-events: none;
         }
 
-        /* 왼쪽/오른쪽으로 갈라지는 커튼 (강렬한 버건디 레드) */
+        /* 벨벳 커튼의 묵직한 버건디 레드 + 세로 천 주름(그라데이션 패턴) 스타일 */
         .curtain-left, .curtain-right {
             width: 50%;
             height: 100%;
-            background: linear-gradient(to rgba(0,0,0,0.2), transparent), #8b0000;
-            box-shadow: inset 0 0 40px rgba(0,0,0,0.8);
-            transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
-            pointer-events: auto; /* 닫혀있을 땐 클릭 막기용 */
+            background: #7a0010;
+            /* 세로로 떨어지는 천 주름 형태를 질감 그라데이션으로 구현 */
+            background-image: repeating-linear-gradient(
+                90deg,
+                rgba(0, 0, 0, 0.4) 0px,
+                rgba(0, 0, 0, 0.2) 10px,
+                transparent 25px,
+                rgba(255, 255, 255, 0.1) 40px,
+                rgba(0, 0, 0, 0.4) 50px
+            );
+            box-shadow: inset -5px 0 20px rgba(0,0,0,0.7), inset 5px 0 20px rgba(0,0,0,0.7);
+            /* 천이 자연스럽게 접히며 넘어가도록 transition 속성 지정 */
+            transition: transform 1.4s cubic-bezier(0.645, 0.045, 0.355, 1.000), 
+                        opacity 1.2s ease,
+                        filter 1.2s ease;
+            transform-origin: left center;
+        }
+        
+        .curtain-right {
+            transform-origin: right center;
         }
 
-        /* [핵심 변환] 조명이 켜지면 커튼이 좌우로 걷힘 */
+        /* [연출] 조명이 켜지면 커튼이 단순히 밀리는 게 아니라 접히면서 스르륵 넘어감 */
         body.light-on .curtain-left {
-            transform: translateX(-100%);
+            transform: scaleX(0) translateX(-100%);
+            opacity: 0.3;
+            filter: blur(2px);
         }
         body.light-on .curtain-right {
-            transform: translateX(100%);
+            transform: scaleX(0) translateX(100%);
+            opacity: 0.3;
+            filter: blur(2px);
         }
 
         /* ==========================================
-           3. 상단 조명 스위치 (무대 핀조명 느낌)
+           3. 상단 조명 스위치 (흰색 선화 스타일)
            ========================================== */
         .switch-container {
             text-align: center;
             cursor: pointer;
-            z-index: 10; /* 커튼보다 무조건 위에 있어야 다시 닫을 수 있음 */
-            transition: transform 0.8s ease;
+            z-index: 10;
             user-select: none;
-            margin-bottom: 30px;
+            margin-bottom: 50px;
+            background: none;
+            border: none;
+            padding: 0;
         }
 
-        .lamp-icon {
-            font-size: 60px;
-            filter: drop-shadow(0 0 10px rgba(0,0,0,0.9));
-            transition: all 0.5s ease;
+        .switch-container svg {
+            stroke: #ffffff;
+            stroke-width: 1.5;
+            fill: none;
+            transition: all 0.4s ease;
+            filter: drop-shadow(0 0 2px rgba(255,255,255,0.3));
         }
 
-        /* 조명이 켜졌을 때 빨간 무대에 꽂히는 강렬한 핀조명 광채 효과 */
-        .lamp-icon.active {
-            text-shadow: 0 0 20px #ffffff, 0 0 40px #ff3333;
-            filter: drop-shadow(0 0 15px #ff3333);
-            transform: scale(1.05);
-        }
-
-        .switch-hint {
-            font-size: 12px;
-            color: #555;
-            margin-top: 10px;
-            letter-spacing: 4px;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-        body.light-on .switch-hint {
-            color: #ff3333;
-            text-shadow: 0 0 8px rgba(255, 51, 51, 0.6);
+        /* 조명이 켜졌을 때 전구 내부가 흰색 네온 형광으로 환하게 빛남 */
+        .switch-container.active svg {
+            stroke: #ffffff;
+            fill: rgba(255, 255, 255, 0.1);
+            filter: drop-shadow(0 0 10px #ffffff) drop-shadow(0 0 25px #ffffff);
         }
 
         /* ==========================================
-           4. 네온 라인 카테고리 아이콘 영역
+           4. 깔끔한 흰색 네온 라인 카테고리 영역
            ========================================== */
         .category-zone {
             opacity: 0;
-            transform: scale(0.95);
+            transform: translateY(20px);
             width: 90%;
             max-width: 800px;
             text-align: center;
             transition: opacity 1s ease, transform 1s ease;
             z-index: 2;
-            visibility: hidden; /* 닫혀있을 때 공간 인식 방지 */
+            visibility: hidden;
         }
 
-        /* 불이 켜지면 무대 장치들이 등장 */
         body.light-on .category-zone {
             opacity: 1;
-            transform: scale(1);
+            transform: translateY(0);
             visibility: visible;
         }
 
         .category-flex {
             display: flex;
             justify-content: center;
-            gap: 50px;
+            gap: 60px;
             flex-wrap: wrap;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
         }
 
-        /* 박스를 아예 없애고, 흰색 선으로만 그린 SVG 아이콘 스타일 */
+        /* 상자 없이 아이콘 자체만 노출 */
         .category-icon-btn {
             background: none;
             border: none;
             cursor: pointer;
-            padding: 10px;
+            padding: 15px;
             transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 12px;
         }
 
-        /* SVG 그래픽 기본 상태 (흰색 라인) */
+        /* 기본 선화 형태 */
         .category-icon-btn svg {
-            stroke: #ffffff;
-            stroke-width: 2;
+            stroke: #777777; /* 평소엔 차분한 회색 선 */
+            stroke-width: 1.8;
             fill: none;
             transition: all 0.3s ease;
-            filter: drop-shadow(0 0 2px rgba(255,255,255,0.5));
         }
 
-        /* [마우스 오버 / 선택 시] 붉은빛 형광(네온) 처리 효과 */
+        /* 마우스를 올리거나 활성화 시 강렬하고 깔끔한 화이트 네온 형광 처리 */
         .category-icon-btn:hover svg, .category-icon-btn.selected svg {
-            stroke: #ff3333;
-            filter: drop-shadow(0 0 8px #ff3333) drop-shadow(0 0 15px #ff3333);
-            transform: scale(1.1);
-        }
-
-        .category-title {
-            font-size: 14px;
-            color: #888;
-            letter-spacing: 1px;
-            transition: color 0.3s;
-        }
-        .category-icon-btn:hover .category-title, .category-icon-btn.selected .category-title {
-            color: #ffffff;
-            text-shadow: 0 0 5px rgba(255,255,255,0.8);
+            stroke: #ffffff;
+            filter: drop-shadow(0 0 8px #ffffff) drop-shadow(0 0 18px #ffffff);
+            transform: scale(1.12);
         }
 
         /* ==========================================
-           5. 하단 캐릭터 리스트 목록화 영역 (강렬한 다크레드 포인트)
+           5. 하단 위키 스타일 목록화 영역
            ========================================== */
         .character-list-section {
             display: none;
-            background: rgba(15, 0, 0, 0.85); /* 매우 어두운 붉은빛 검정 */
-            border: 1px solid #ff3333;
-            box-shadow: 0 0 15px rgba(255, 51, 51, 0.2);
+            background: #121212; /* 위키 가독성을 위한 다크 그레이 */
+            border: 1px solid #333333;
             padding: 30px;
-            border-radius: 6px;
+            border-radius: 4px;
             text-align: left;
-            animation: slideUp 0.4s ease forwards;
+            animation: fadeIn 0.4s ease forwards;
         }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .character-list-section h2 {
             margin-top: 0;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #ff3333;
-            padding-bottom: 10px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #444444;
+            padding-bottom: 8px;
             color: #ffffff;
-            font-size: 20px;
-            letter-spacing: 1px;
+            font-size: 18px;
         }
 
         .archive-list {
@@ -199,41 +193,25 @@
         }
 
         .archive-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 10px;
-            border-bottom: 1px solid rgba(255, 51, 51, 0.2);
+            padding: 12px 8px;
+            border-bottom: 1px solid #222222;
         }
 
-        .archive-item:hover {
-            background: rgba(255, 51, 51, 0.08);
+        .archive-item:last-child {
+            border-bottom: none;
         }
 
+        /* 나무위키처럼 깔끔하고 직관적으로 바로 넘어가는 링크 */
         .item-link {
-            color: #ffffff;
+            color: #3399ff; /* 위키 특유의 블루 링크 컬러감 반영 */
             text-decoration: none;
-            font-size: 16px;
-            font-weight: 500;
-            transition: color 0.2s;
+            font-size: 15px;
+            transition: color 0.2s, text-decoration 0.2s;
         }
+        
         .item-link:hover {
-            color: #ff3333;
+            color: #66b2ff;
             text-decoration: underline;
-        }
-
-        .item-tag {
-            font-size: 11px;
-            border: 1px solid #ff3333;
-            color: #ff3333;
-            padding: 2px 8px;
-            border-radius: 20px;
-            font-weight: bold;
-        }
-
-        .item-meta {
-            font-size: 13px;
-            color: #666;
         }
     </style>
 </head>
@@ -244,139 +222,53 @@
         <div class="curtain-right"></div>
     </div>
 
-    <div class="switch-container" id="lampSwitch" onclick="toggleStage()">
-        <div class="lamp-icon" id="lampIcon">💡</div>
-        <div class="switch-hint" id="switchHint">Click to Open Curtain</div>
-    </div>
+    <button class="switch-container" id="lampSwitch" onclick="toggleStage()">
+        <svg width="60" height="60" viewBox="0 0 60 60">
+            <path d="M30,5 L30,15" />
+            <path d="M20,28 C20,20 40,20 40,28 C40,34 35,37 35,42 L25,42 C25,37 20,34 20,28 Z" />
+            <path d="M26,46 L34,46 M28,50 L32,50" />
+        </svg>
+    </button>
 
     <div class="category-zone" id="categoryZone">
         <div class="category-flex">
             
             <button class="category-icon-btn" id="btn-cat1" onclick="showCategory('cat1')">
-                <svg width="60" height="60" viewBox="0 0 60 60">
-                    <circle cx="30" cy="30" r="26" />
-                    <path d="M12,18 C20,24 20,36 12,42" />
-                    <path d="M48,18 C40,24 40,36 48,42" />
+                <svg width="55" height="55" viewBox="0 0 60 60">
+                    <circle cx="30" cy="30" r="25" />
+                    <path d="M13,17 C21,23 21,37 13,43" />
+                    <path d="M47,17 C39,23 39,37 47,43" />
                 </svg>
-                <span class="category-title">야구공 카테고리</span>
             </button>
 
             <button class="category-icon-btn" id="btn-cat2" onclick="showCategory('cat2')">
-                <svg width="60" height="60" viewBox="0 0 60 60">
-                    <circle cx="30" cy="30" r="14" />
-                    <path d="M30,5 L30,11 M30,49 L30,55 M5,30 L11,30 M49,30 L55,30 M12,12 L17,17 M43,43 L48,48 M12,43 L17,38 M43,12 L48,17" />
+                <svg width="55" height="55" viewBox="0 0 60 60">
+                    <circle cx="30" cy="30" r="13" />
+                    <path d="M30,6 L30,12 M30,48 L30,54 M6,30 L12,30 M48,30 L54,30 M14,14 L18,18 M42,42 L46,46 M14,42 L18,38 M42,14 L46,18" />
                 </svg>
-                <span class="category-title">태양 카테고리</span>
             </button>
 
             <button class="category-icon-btn" id="btn-cat3" onclick="showCategory('cat3')">
-                <svg width="60" height="60" viewBox="0 0 60 60">
-                    <path d="M10,32 C10,15 50,15 50,32 Z" />
-                    <path d="M22,32 L22,50 C22,54 38,54 38,50 L38,32" />
-                    <line x1="10" y1="32" x2="50" y2="32" />
+                <svg width="55" height="55" viewBox="0 0 60 60">
+                    <path d="M12,32 C12,16 48,16 48,32 Z" />
+                    <path d="M23,32 L23,48 C23,52 37,52 37,48 L37,32" />
+                    <line x1="12" y1="32" x2="48" y2="32" />
                 </svg>
-                <span class="category-title">버섯 카테고리</span>
             </button>
 
             <button class="category-icon-btn" id="btn-cat4" onclick="showCategory('cat4')">
-                <svg width="60" height="60" viewBox="0 0 60 60">
-                    <circle cx="30" cy="30" r="26" />
-                    <line x1="4" y1="30" x2="56" y2="30" />
-                    <circle cx="30" cy="30" r="7" style="fill: #0a0a0a;" />
+                <svg width="55" height="55" viewBox="0 0 60 60">
+                    <circle cx="30" cy="30" r="25" />
+                    <line x1="5" y1="30" x2="55" y2="30" />
+                    <circle cx="30" cy="30" r="8" style="fill: #0d0d0d; stroke-width: 1.8;" />
                     <circle cx="30" cy="30" r="3" />
                 </svg>
-                <span class="category-title">몬스터볼 카테고리</span>
             </button>
 
         </div>
 
         <div class="character-list-section" id="list-cat1">
-            <h2>⚾ BASEBALL ARCHIVE</h2>
+            <h2>목록: 야구공 관련 데이터</h2>
             <ul class="archive-list">
                 <li class="archive-item">
-                    <a href="#" class="item-link">▶ 아직 연결된 캐릭터 파일이 없습니다.html</a>
-                    <span class="item-tag">TAG</span>
-                    <span class="item-meta">2026-05-30</span>
-                </li>
-            </ul>
-        </div>
-
-        <div class="character-list-section" id="list-cat2">
-            <h2>☀️ SUN ARCHIVE</h2>
-            <ul class="archive-list">
-                <li class="archive-item">
-                    <a href="#" class="item-link">▶ 아직 연결된 캐릭터 파일이 없습니다.html</a>
-                    <span class="item-tag">TAG</span>
-                    <span class="item-meta">2026-05-30</span>
-                </li>
-            </ul>
-        </div>
-
-        <div class="character-list-section" id="list-cat3">
-            <h2>🍄 MUSHROOM ARCHIVE</h2>
-            <ul class="archive-list">
-                <li class="archive-item">
-                    <a href="#" class="item-link">▶ 아직 연결된 캐릭터 파일이 없습니다.html</a>
-                    <span class="item-tag">TAG</span>
-                    <span class="item-meta">2026-05-30</span>
-                </li>
-            </ul>
-        </div>
-
-        <div class="character-list-section" id="list-cat4">
-            <h2>🔴 POKEBALL ARCHIVE</h2>
-            <ul class="archive-list">
-                <li class="archive-item">
-                    <a href="#" class="item-link">▶ 아직 연결된 캐릭터 파일이 없습니다.html</a>
-                    <span class="item-tag">TAG</span>
-                    <span class="item-meta">2026-05-30</span>
-                </li>
-            </ul>
-        </div>
-
-    </div>
-
-    <script>
-        // 1. 커튼 열고 닫기 (토글 방식)
-        function toggleStage() {
-            const body = document.body;
-            const lampIcon = document.getElementById('lampIcon');
-            const hint = document.getElementById('switchHint');
-            
-            if(body.classList.contains('light-on')) {
-                // 불이 켜져있었다면 무대를 끄고 커튼을 닫음
-                body.classList.remove('light-on');
-                lampIcon.classList.remove('active');
-                hint.innerText = "Click to Open Curtain";
-                
-                // 열려있던 하단 리스트도 일괄 초기화
-                const allLists = document.querySelectorAll('.character-list-section');
-                allLists.forEach(list => list.style.display = 'none');
-                const allCards = document.querySelectorAll('.category-icon-btn');
-                allCards.forEach(card => card.classList.remove('selected'));
-            } else {
-                // 불을 켜고 커튼을 엶
-                body.classList.add('light-on');
-                lampIcon.classList.add('active');
-                hint.innerText = "Click to Close Curtain";
-            }
-        }
-
-        // 2. 카테고리 클릭 시 목록 노출
-        function showCategory(categoryId) {
-            const allLists = document.querySelectorAll('.character-list-section');
-            allLists.forEach(list => list.style.display = 'none');
-
-            const allCards = document.querySelectorAll('.category-icon-btn');
-            allCards.forEach(card => card.classList.remove('selected'));
-
-            const targetList = document.getElementById('list-' + categoryId);
-            if (targetList) {
-                targetList.style.display = 'block';
-                document.getElementById('btn-' + categoryId).classList.add('selected');
-                targetList.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-    </script>
-</body>
-</html>
+                    <a
