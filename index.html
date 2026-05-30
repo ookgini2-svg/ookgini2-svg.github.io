@@ -6,14 +6,14 @@
     <title>Curtain Call Archive</title>
     <style>
         /* ==========================================
-           1. 전체 레이아웃 & 기본 배경 (답답하지 않은 밤하늘색)
+           1. 전체 레이아웃 & 기본 배경 (커튼 열리면 흰색으로)
            ========================================== */
         body {
             margin: 0;
             padding: 0;
-            background-color: #12161f; /* 청량함이 가미된 딥 밤하늘색 */
+            background-color: #ffffff; /* 커튼 뒤 기본 배경은 완벽한 흰색 */
             font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
-            color: #e2e8f0; /* 밤하늘에 어울리는 부드러운 화이트 */
+            color: #000000; /* 흰색 배경에 어울리는 블랙 텍스트 기본값 */
             overflow-x: hidden;
             display: flex;
             flex-direction: column;
@@ -48,7 +48,7 @@
         body.light-on .curtain-right { transform: translateX(100%); opacity: 0; }
 
         /* ==========================================
-           3. 반전형 조명 스위치 (형광 민트 포인트 적용)
+           3. 반전형 조명 스위치 (형광 민트 포인트 유지)
            ========================================== */
         .switch-container {
             text-align: center;
@@ -71,8 +71,8 @@
 
         /* 불이 켜졌을 때 (Active 상태) */
         .switch-container.active svg {
-            stroke: #ffffff;
-            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8)) drop-shadow(0 0 15px rgba(74, 246, 195, 0.4));
+            stroke: #000000; /* 밝은 배경에 맞춰 스위치 라인은 블랙으로 반전 */
+            filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.3)) drop-shadow(0 0 15px rgba(74, 246, 195, 0.4));
         }
 
         /* ==========================================
@@ -117,12 +117,17 @@
         }
 
         .category-icon-btn svg {
-            stroke: #64748b; /* 평상시 차분한 가이드 컬러 */
+            stroke: #b0b0b0; /* 평상시 연한 회색 가이드 라인 */
             stroke-width: 1.8;
             fill: none;
             transition: all 0.3s ease;
             width: 55px;  
             height: 55px;
+        }
+
+        /* 4번째 몬스터볼 아이콘 내부 전용 검정색 처리 */
+        .category-icon-btn .ball-inner {
+            fill: #000000 !important; /* 항상 검정색 유지 */
         }
 
         /* 호버 및 선택 상태: 청량한 민트 네온 효과 */
@@ -139,17 +144,17 @@
         }
 
         /* ==========================================
-           5. 하단 원페이지 다크 나무위키 문서 서식
+           5. 하단 원페이지 나무위키 문서 서식 (흰색 배경용)
            ========================================== */
         .character-list-section {
             display: none;
-            background: #1a202c; /* 답답하지 않은 다크 그레이 아웃라인 패널 */
-            border: 1px solid #2d3748;
+            background: #fafafa; /* 화이트 테마용 깔끔한 배경 */
+            border: 1px solid #e0e0e0;
             padding: 25px;
             border-radius: 8px;
             text-align: left;
             margin-top: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
             animation: slideFadeIn 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
             box-sizing: border-box;
         }
@@ -165,14 +170,19 @@
             align-items: center;
             margin-bottom: 25px;
             padding-bottom: 15px;
-            border-bottom: 2px solid #2d3748;
+            border-bottom: 2px solid #e0e0e0;
         }
 
         .wiki-center-icon svg {
-            stroke: #4af6c3; /* 상단 아이콘 컬러 매칭 */
+            stroke: #4af6c3; 
             stroke-width: 1.8;
             fill: none;
-            filter: drop-shadow(0 0 5px rgba(74, 246, 195, 0.5)); 
+            filter: drop-shadow(0 0 4px rgba(74, 246, 195, 0.6)); 
+        }
+
+        /* 4번째 몬스터볼 서브 아이콘 내부도 검정색 반영 */
+        .wiki-center-icon svg .ball-inner {
+            fill: #000000 !important;
         }
 
         .wiki-table {
@@ -180,49 +190,48 @@
             max-width: 420px;
             margin: 0 auto 25px auto; 
             border-collapse: collapse;
-            border: 1px solid #4a5568;
+            border: 1px solid #ccd0d4;
             font-size: 14px;
         }
 
         .wiki-table th {
-            background: #2d3748; /* 표 헤더 톤 다운 */
-            color: #4af6c3; /* 표 타이틀 형광 포인트 */
+            background: #eeeeee; 
+            color: #000000; 
             padding: 9px;
             font-weight: bold;
-            border: 1px solid #4a5568;
+            border: 1px solid #ccd0d4;
             width: 30%;
             text-align: center;
-            text-shadow: 0 0 4px rgba(74, 246, 195, 0.3);
         }
 
         .wiki-table td {
-            background: #1a202c;
-            color: #e2e8f0;
+            background: #ffffff;
+            color: #333333;
             padding: 9px;
-            border: 1px solid #4a5568;
+            border: 1px solid #ccd0d4;
         }
 
         .wiki-heading {
             font-size: 18px;
-            color: #ffffff;
-            border-left: 4px solid #4af6c3; /* 문서 목차선에 형광 적용 */
+            color: #000000;
+            border-left: 4px solid #4af6c3; /* 포인트 네온 컬러 유지 */
             padding-left: 10px;
             margin: 25px 0 12px 0;
             font-weight: bold;
-            text-shadow: 0 0 5px rgba(74, 246, 195, 0.4);
+            text-shadow: 0 0 4px rgba(74, 246, 195, 0.2);
         }
 
         .wiki-content {
             font-size: 14px;
             line-height: 1.6;
-            color: #cbd5e1;
+            color: #222222;
             margin-bottom: 15px;
             padding-left: 5px;
         }
 
-        /* 본문 내부 강조용 네온 스팬 태그 (필요시 사용) */
+        /* 본문 내부 강조용 네온 스팬 태그 */
         .highlight-neon {
-            color: #4af6c3;
+            color: #2bbd92; /* 밝은 배경에서 가독성을 확보하기 위해 채도를 살짝 낮춘 형광 그린 */
             font-weight: bold;
             text-shadow: 0 0 4px rgba(74, 246, 195, 0.4);
         }
@@ -274,7 +283,7 @@
                 <svg viewBox="0 0 60 60">
                     <circle cx="30" cy="30" r="25" />
                     <line x1="5" y1="30" x2="55" y2="30" />
-                    <circle cx="30" cy="30" r="8" style="fill: none; stroke-width: 1.8;" />
+                    <circle class="ball-inner" cx="30" cy="30" r="8" style="stroke-width: 1.8;" />
                     <circle cx="30" cy="30" r="3" />
                 </svg>
             </button>
@@ -322,7 +331,7 @@
 
         <div class="character-list-section" id="list-cat4">
             <div class="wiki-center-icon">
-                <svg width="50" height="50" viewBox="0 0 60 60"><circle cx="30" cy="30" r="25" /><line x1="5" y1="30" x2="55" y2="30" /><circle cx="30" cy="30" r="8" style="fill: none; stroke-width: 1.8;" /><circle cx="30" cy="30" r="3" /></svg>
+                <svg width="50" height="50" viewBox="0 0 60 60"><circle cx="30" cy="30" r="25" /><line x1="5" y1="30" x2="55" y2="30" /><circle class="ball-inner" cx="30" cy="30" r="8" style="stroke-width: 1.8;" /><circle cx="30" cy="30" r="3" /></svg>
             </div>
             <table class="wiki-table">
                 <tr><th>이름</th><td>캐릭터 이름 입력</td></tr>
