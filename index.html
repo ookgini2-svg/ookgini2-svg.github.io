@@ -6,14 +6,14 @@
     <title>Curtain Call Archive</title>
     <style>
         /* ==========================================
-           1. 전체 레이아웃 & 기본 배경 (기본 흰색, 커튼 닫혔을 땐 숨김)
+           1. 전체 레이아웃 & 기본 배경
            ========================================== */
         body {
             margin: 0;
             padding: 0;
-            background-color: #ffffff; /* 기본 무대 배경은 흰색 */
+            background-color: #ffffff; 
             font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
-            color: #000000; /* 텍스트는 기본 검은색 */
+            color: #000000; 
             overflow-x: hidden;
             display: flex;
             flex-direction: column;
@@ -24,7 +24,7 @@
         }
 
         /* ==========================================
-           2. [수정] 처음을 채우는 완벽한 검은색 단색 커튼
+           2. 완벽한 블랙 단색 커튼
            ========================================== */
         .curtain-container {
             position: fixed;
@@ -40,16 +40,15 @@
         .curtain-left, .curtain-right {
             width: 50%;
             height: 100%;
-            background: #0d0d0d; /* 완전한 블랙 커튼 */
+            background: #0d0d0d; 
             transition: transform 1.3s cubic-bezier(0.25, 1, 0.5, 1), opacity 1s ease-out;
         }
 
-        /* 조명 켜지면 검은 커튼이 양옆으로 사르르 퇴장 */
         body.light-on .curtain-left { transform: translateX(-100%); opacity: 0; }
         body.light-on .curtain-right { transform: translateX(100%); opacity: 0; }
 
         /* ==========================================
-           3. [수정] 커튼 유무에 따라 색상이 완전히 반전되는 조명 스위치
+           3. 반전형 조명 스위치
            ========================================== */
         .switch-container {
             text-align: center;
@@ -62,7 +61,6 @@
             margin-bottom: 40px;
         }
 
-        /* 기본 상태 (검은 커튼이 닫혀 있을 때): 흰색 선으로 또렷하게 표시 */
         .switch-container svg {
             stroke: #ffffff;
             stroke-width: 1.8;
@@ -70,14 +68,13 @@
             transition: stroke 0.5s ease, filter 0.4s ease;
         }
 
-        /* 활성화 상태 (커튼이 열려 흰색 배경일 때): 검은색 선 + 블랙 형광 효과 */
         .switch-container.active svg {
             stroke: #000000;
             filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 15px rgba(0, 0, 0, 0.3));
         }
 
         /* ==========================================
-           4. [수정] 흰색 배경 맞춤형 카테고리 영역 & 모바일 최적화
+           4. 카테고리 영역 & 모바일 최적화 (한 줄 고정)
            ========================================== */
         .category-zone {
             opacity: 0;
@@ -98,12 +95,11 @@
             visibility: visible;
         }
 
-        /* 아이콘들을 무조건 한 줄로 예쁘게 나열하는 플렉스 박스 */
         .category-flex {
             display: flex;
             justify-content: center;
-            gap: 50px; /* 데스크톱 기본 여백 */
-            flex-wrap: nowrap; /* [중요] 모바일에서도 절대 줄바꿈 되지 않도록 고정 */
+            gap: 50px; 
+            flex-wrap: nowrap; 
             margin-bottom: 40px;
             width: 100%;
         }
@@ -115,58 +111,49 @@
             padding: 10px;
             transition: all 0.3s ease;
             outline: none;
-            flex-shrink: 1; /* 화면이 좁아지면 비율에 맞춰 자연스럽게 축소 */
+            flex-shrink: 1; 
         }
 
-        /* 미선택 상태: 연한 회색 선화 */
         .category-icon-btn svg {
             stroke: #b0b0b0;
             stroke-width: 1.8;
             fill: none;
             transition: all 0.3s ease;
-            width: 55px;  /* 데스크톱 기본 크기 */
+            width: 55px;  
             height: 55px;
         }
 
-        /* [수정] 호버 및 선택 상태: 진한 검은색 선 + 묵직한 블랙 형광(Glow) 처리 */
+        /* 호버 및 On 상태: 블랙 형광 처리 */
         .category-icon-btn:hover svg, .category-icon-btn.selected svg {
             stroke: #000000;
             filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.5)) drop-shadow(0 0 15px rgba(0, 0, 0, 0.2));
             transform: scale(1.1);
         }
 
-        /* 📱 모바일 화면 (스마트폰 세로 모드) 최적화 대응 */
         @media (max-width: 480px) {
-            .category-flex {
-                gap: 20px; /* 모바일에서는 아이콘 사이 간격을 좁혀서 한 줄 유지 */
-            }
-            .category-icon-btn svg {
-                width: 42px; /* 모바일 화면에 맞춰 아이콘 크기 자동 최적화 */
-                height: 42px;
-            }
-            .switch-container {
-                margin-bottom: 25px;
-            }
+            .category-flex { gap: 20px; }
+            .category-icon-btn svg { width: 42px; height: 42px; }
+            .switch-container { margin-bottom: 25px; }
         }
 
         /* ==========================================
-           5. 하단 원페이지 나무위키 문서 서식 (흰색 배경용 다크/그레이 포인트)
+           5. 하단 원페이지 나무위키 문서 서식
            ========================================== */
         .character-list-section {
             display: none;
-            background: #fafafa; /* 흰색 배경 위에서 깔끔하게 구분되는 옅은 회색 박스 */
+            background: #fafafa; 
             border: 1px solid #e0e0e0;
             padding: 25px;
             border-radius: 6px;
             text-align: left;
             margin-top: 20px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-            animation: slideFadeIn 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            animation: slideFadeIn 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
             box-sizing: border-box;
         }
 
         @keyframes slideFadeIn {
-            from { opacity: 0; transform: translateY(15px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -186,7 +173,6 @@
             filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3)); 
         }
 
-        /* 나무위키 내부 프로필 표 */
         .wiki-table {
             width: 100%;
             max-width: 420px;
@@ -213,7 +199,6 @@
             border: 1px solid #ccd0d4;
         }
 
-        /* 위키 텍스트 문단 스타일 */
         .wiki-heading {
             font-size: 18px;
             color: #000000;
@@ -234,11 +219,13 @@
 </head>
 <body>
 
+    <!-- [커튼] 블랙 레이어 -->
     <div class="curtain-container">
         <div class="curtain-left"></div>
         <div class="curtain-right"></div>
     </div>
 
+    <!-- [스위치] 조명 아이콘 -->
     <button class="switch-container" id="lampSwitch" onclick="toggleStage()">
         <svg width="65" height="65" viewBox="0 0 80 80">
             <line x1="10" y1="10" x2="70" y2="10" />
@@ -248,9 +235,11 @@
         </svg>
     </button>
 
+    <!-- [무대 본체] -->
     <div class="category-zone" id="categoryZone">
         <div class="category-flex">
             
+            <!-- 야구공 탭 -->
             <button class="category-icon-btn" id="btn-cat1" onclick="showCategory('cat1')">
                 <svg viewBox="0 0 60 60">
                     <circle cx="30" cy="30" r="25" />
@@ -259,6 +248,7 @@
                 </svg>
             </button>
 
+            <!-- 태양 탭 -->
             <button class="category-icon-btn" id="btn-cat2" onclick="showCategory('cat2')">
                 <svg viewBox="0 0 60 60">
                     <circle cx="30" cy="30" r="13" />
@@ -266,6 +256,7 @@
                 </svg>
             </button>
 
+            <!-- 버섯 탭 -->
             <button class="category-icon-btn" id="btn-cat3" onclick="showCategory('cat3')">
                 <svg viewBox="0 0 60 60">
                     <path d="M12,32 C12,16 48,16 48,32 Z" />
@@ -274,6 +265,7 @@
                 </svg>
             </button>
 
+            <!-- 몬스터볼 탭 -->
             <button class="category-icon-btn" id="btn-cat4" onclick="showCategory('cat4')">
                 <svg viewBox="0 0 60 60">
                     <circle cx="30" cy="30" r="25" />
@@ -285,68 +277,66 @@
 
         </div>
 
+        <!-- 내장형 나무위키 본문 영역 -->
+        
+        <!-- 야구공 문서 데이터 -->
         <div class="character-list-section" id="list-cat1">
             <div class="wiki-center-icon">
                 <svg width="50" height="50" viewBox="0 0 60 60"><circle cx="30" cy="30" r="25" /><path d="M13,17 C21,23 21,37 13,43" /><path d="M47,17 C39,23 39,37 47,43" /></svg>
             </div>
-            
             <table class="wiki-table">
                 <tr><th>이름</th><td>캐릭터 이름 입력</td></tr>
                 <tr><th>소속</th><td>여기에 소속 입력</td></tr>
                 <tr><th>상태</th><td>활동 가능 / 불명</td></tr>
             </table>
-
             <div class="wiki-heading">1. 개요</div>
             <div class="wiki-content">내용을 입력하세요.</div>
-            
             <div class="wiki-heading">2. 세부 설정</div>
             <div class="wiki-content">내용을 입력하세요.</div>
         </div>
 
+        <!-- 태양 문서 데이터 -->
         <div class="character-list-section" id="list-cat2">
             <div class="wiki-center-icon">
                 <svg width="50" height="50" viewBox="0 0 60 60"><circle cx="30" cy="30" r="13" /><path d="M30,6 L30,12 M30,48 L30,54 M6,30 L12,30 M48,30 L54,30 M14,14 L18,18 M42,42 L46,46 M14,42 L18,38 M42,14 L46,18" /></svg>
             </div>
-
             <table class="wiki-table">
                 <tr><th>이름</th><td>캐릭터 이름 입력</td></tr>
                 <tr><th>소속</th><td>여기에 소속 입력</td></tr>
             </table>
-
             <div class="wiki-heading">1. 개요</div>
             <div class="wiki-content">내용을 입력하세요.</div>
         </div>
 
+        <!-- 버섯 문서 데이터 -->
         <div class="character-list-section" id="list-cat3">
             <div class="wiki-center-icon">
                 <svg width="50" height="50" viewBox="0 0 60 60"><path d="M12,32 C12,16 48,16 48,32 Z" /><path d="M23,32 L23,48 C23,52 37,52 37,48 L37,32" /><line x1="12" y1="32" x2="48" y2="32" /></svg>
             </div>
-
             <table class="wiki-table">
                 <tr><th>이름</th><td>캐릭터 이름 입력</td></tr>
                 <tr><th>소속</th><td>여기에 소속 입력</td></tr>
             </table>
-
             <div class="wiki-heading">1. 개요</div>
             <div class="wiki-content">내용을 입력하세요.</div>
         </div>
 
+        <!-- 몬스터볼 문서 데이터 -->
         <div class="character-list-section" id="list-cat4">
             <div class="wiki-center-icon">
                 <svg width="50" height="50" viewBox="0 0 60 60"><circle cx="30" cy="30" r="25" /><line x1="5" y1="30" x2="55" y2="30" /><circle cx="30" cy="30" r="8" style="fill: #ffffff; stroke-width: 1.8;" /><circle cx="30" cy="30" r="3" /></svg>
             </div>
-
             <table class="wiki-table">
                 <tr><th>이름</th><td>캐릭터 이름 입력</td></tr>
                 <tr><th>소속</th><td>여기에 소속 입력</td></tr>
             </table>
-
             <div class="wiki-heading">1. 개요</div>
             <div class="wiki-content">내용을 입력하세요.</div>
         </div>
 
     </div>
 
+    <!-- [수정] On/Off 토글이 가능한 스마트 제어 스크립트 -->
     <script>
         function toggleStage() {
             const body = document.body;
@@ -356,6 +346,7 @@
                 body.classList.remove('light-on');
                 lampSwitch.classList.remove('active');
                 
+                // 메인 스위치를 꺼서 커튼을 닫으면 열려있던 문서와 선택 상태도 전부 초기화
                 const allLists = document.querySelectorAll('.character-list-section');
                 allLists.forEach(list => list.style.display = 'none');
                 const allCards = document.querySelectorAll('.category-icon-btn');
@@ -367,16 +358,26 @@
         }
 
         function showCategory(categoryId) {
+            const currentBtn = document.getElementById('btn-' + categoryId);
+            const targetList = document.getElementById('list-' + categoryId);
+
+            // [핵심 로직] 이미 선택된 아이콘을 다시 누른 경우 -> 끄기 (Off)
+            if (currentBtn.classList.contains('selected')) {
+                currentBtn.classList.remove('selected');
+                if (targetList) targetList.style.display = 'none';
+                return; // 함수 종료
+            }
+
+            // 새로운 아이콘을 누른 경우 -> 기존에 켜져있던 것들 싹 지우고 새로 켜기 (On)
             const allLists = document.querySelectorAll('.character-list-section');
             allLists.forEach(list => list.style.display = 'none');
 
             const allCards = document.querySelectorAll('.category-icon-btn');
             allCards.forEach(card => card.classList.remove('selected'));
 
-            const targetList = document.getElementById('list-' + categoryId);
             if (targetList) {
                 targetList.style.display = 'block';
-                document.getElementById('btn-' + categoryId).classList.add('selected');
+                currentBtn.classList.add('selected');
                 targetList.scrollIntoView({ behavior: 'smooth' });
             }
         }
