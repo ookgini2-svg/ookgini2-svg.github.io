@@ -119,15 +119,10 @@
         .category-icon-btn svg {
             stroke: #b0b0b0; /* 평상시 연한 회색 가이드 라인 */
             stroke-width: 1.8;
-            fill: none;
+            fill: none; /* 내부 채우기 없음 (기존 투명 상태로 복구) */
             transition: all 0.3s ease;
             width: 55px;  
             height: 55px;
-        }
-
-        /* 4번째 몬스터볼 아이콘 내부 전용 검정색 처리 */
-        .category-icon-btn .ball-inner {
-            fill: #000000 !important; /* 항상 검정색 유지 */
         }
 
         /* 호버 및 선택 상태: 청량한 민트 네온 효과 */
@@ -178,11 +173,6 @@
             stroke-width: 1.8;
             fill: none;
             filter: drop-shadow(0 0 4px rgba(74, 246, 195, 0.6)); 
-        }
-
-        /* 4번째 몬스터볼 서브 아이콘 내부도 검정색 반영 */
-        .wiki-center-icon svg .ball-inner {
-            fill: #000000 !important;
         }
 
         .wiki-table {
@@ -239,11 +229,13 @@
 </head>
 <body>
 
+    <!-- [커튼] 블랙 레이어 -->
     <div class="curtain-container">
         <div class="curtain-left"></div>
         <div class="curtain-right"></div>
     </div>
 
+    <!-- [스위치] 조명 아이콘 -->
     <button class="switch-container" id="lampSwitch" onclick="toggleStage()">
         <svg width="65" height="65" viewBox="0 0 80 80">
             <line x1="10" y1="10" x2="70" y2="10" />
@@ -253,9 +245,11 @@
         </svg>
     </button>
 
+    <!-- [무대 본체] -->
     <div class="category-zone" id="categoryZone">
         <div class="category-flex">
             
+            <!-- 야구공 탭 -->
             <button class="category-icon-btn" id="btn-cat1" onclick="showCategory('cat1')">
                 <svg viewBox="0 0 60 60">
                     <circle cx="30" cy="30" r="25" />
@@ -264,6 +258,7 @@
                 </svg>
             </button>
 
+            <!-- 태양 탭 -->
             <button class="category-icon-btn" id="btn-cat2" onclick="showCategory('cat2')">
                 <svg viewBox="0 0 60 60">
                     <circle cx="30" cy="30" r="13" />
@@ -271,6 +266,7 @@
                 </svg>
             </button>
 
+            <!-- 버섯 탭 -->
             <button class="category-icon-btn" id="btn-cat3" onclick="showCategory('cat3')">
                 <svg viewBox="0 0 60 60">
                     <path d="M12,32 C12,16 48,16 48,32 Z" />
@@ -279,17 +275,21 @@
                 </svg>
             </button>
 
+            <!-- 몬스터볼 탭 (다시 투명한 라인으로 원복) -->
             <button class="category-icon-btn" id="btn-cat4" onclick="showCategory('cat4')">
                 <svg viewBox="0 0 60 60">
                     <circle cx="30" cy="30" r="25" />
                     <line x1="5" y1="30" x2="55" y2="30" />
-                    <circle class="ball-inner" cx="30" cy="30" r="8" style="stroke-width: 1.8;" />
+                    <circle cx="30" cy="30" r="8" style="stroke-width: 1.8;" />
                     <circle cx="30" cy="30" r="3" />
                 </svg>
             </button>
 
         </div>
 
+        <!-- 내장형 나무위키 본문 영역 -->
+        
+        <!-- 야구공 문서 데이터 -->
         <div class="character-list-section" id="list-cat1">
             <div class="wiki-center-icon">
                 <svg width="50" height="50" viewBox="0 0 60 60"><circle cx="30" cy="30" r="25" /><path d="M13,17 C21,23 21,37 13,43" /><path d="M47,17 C39,23 39,37 47,43" /></svg>
@@ -305,6 +305,7 @@
             <div class="wiki-content">내용을 입력하세요.</div>
         </div>
 
+        <!-- 태양 문서 데이터 -->
         <div class="character-list-section" id="list-cat2">
             <div class="wiki-center-icon">
                 <svg width="50" height="50" viewBox="0 0 60 60"><circle cx="30" cy="30" r="13" /><path d="M30,6 L30,12 M30,48 L30,54 M6,30 L12,30 M48,30 L54,30 M14,14 L18,18 M42,42 L46,46 M14,42 L18,38 M42,14 L46,18" /></svg>
@@ -317,6 +318,7 @@
             <div class="wiki-content">내용을 입력하세요.</div>
         </div>
 
+        <!-- 버섯 문서 데이터 -->
         <div class="character-list-section" id="list-cat3">
             <div class="wiki-center-icon">
                 <svg width="50" height="50" viewBox="0 0 60 60"><path d="M12,32 C12,16 48,16 48,32 Z" /><path d="M23,32 L23,48 C23,52 37,52 37,48 L37,32" /><line x1="12" y1="32" x2="48" y2="32" /></svg>
@@ -329,9 +331,10 @@
             <div class="wiki-content">내용을 입력하세요.</div>
         </div>
 
+        <!-- 몬스터볼 문서 데이터 -->
         <div class="character-list-section" id="list-cat4">
             <div class="wiki-center-icon">
-                <svg width="50" height="50" viewBox="0 0 60 60"><circle cx="30" cy="30" r="25" /><line x1="5" y1="30" x2="55" y2="30" /><circle class="ball-inner" cx="30" cy="30" r="8" style="stroke-width: 1.8;" /><circle cx="30" cy="30" r="3" /></svg>
+                <svg width="50" height="50" viewBox="0 0 60 60"><circle cx="30" cy="30" r="25" /><line x1="5" y1="30" x2="55" y2="30" /><circle cx="30" cy="30" r="8" style="stroke-width: 1.8;" /><circle cx="30" cy="30" r="3" /></svg>
             </div>
             <table class="wiki-table">
                 <tr><th>이름</th><td>캐릭터 이름 입력</td></tr>
@@ -343,6 +346,7 @@
 
     </div>
 
+    <!-- On/Off 토글이 가능한 스마트 제어 스크립트 -->
     <script>
         function toggleStage() {
             const body = document.body;
