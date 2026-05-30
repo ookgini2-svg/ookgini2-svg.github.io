@@ -6,12 +6,12 @@
     <title>Curtain Call Archive</title>
     <style>
         /* ==========================================
-           1. 전체 레이아웃 & 테마 (딥 블랙)
+           1. 전체 레이아웃 & 3D 공간 설정
            ========================================== */
         body {
             margin: 0;
             padding: 0;
-            background-color: #0d0d0d; /* 완전한 암전 상태의 블랙 */
+            background-color: #0d0d0d;
             font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
             color: #ffffff;
             overflow-x: hidden;
@@ -21,10 +21,12 @@
             justify-content: center;
             min-height: 100vh;
             position: relative;
+            /* 커튼이 입체적으로 회전하며 걷히도록 3D 깊이감 부여 */
+            perspective: 1200px; 
         }
 
         /* ==========================================
-           2. 실제 천 느낌의 입체 무대 커튼 (Curtain) 연출
+           2. 걷혀 넘어가는 입체 무대 커튼 (Curtain) 연출
            ========================================== */
         .curtain-container {
             position: fixed;
@@ -37,56 +39,56 @@
             pointer-events: none;
         }
 
-        /* 벨벳 커튼의 묵직한 버건디 레드 + 세로 천 주름(그라데이션 패턴) 스타일 */
         .curtain-left, .curtain-right {
             width: 50%;
             height: 100%;
-            background: #7a0010;
-            /* 세로로 떨어지는 천 주름 형태를 질감 그라데이션으로 구현 */
+            background: #800010;
+            /* 묵직한 벨벳 주름 천의 명암 처리 */
             background-image: repeating-linear-gradient(
                 90deg,
-                rgba(0, 0, 0, 0.4) 0px,
-                rgba(0, 0, 0, 0.2) 10px,
-                transparent 25px,
-                rgba(255, 255, 255, 0.1) 40px,
-                rgba(0, 0, 0, 0.4) 50px
+                rgba(0, 0, 0, 0.45) 0px,
+                rgba(0, 0, 0, 0.2) 15px,
+                transparent 30px,
+                rgba(255, 255, 255, 0.08) 45px,
+                rgba(0, 0, 0, 0.45) 60px
             );
-            box-shadow: inset -5px 0 20px rgba(0,0,0,0.7), inset 5px 0 20px rgba(0,0,0,0.7);
-            /* 천이 자연스럽게 접히며 넘어가도록 transition 속성 지정 */
-            transition: transform 1.4s cubic-bezier(0.645, 0.045, 0.355, 1.000), 
-                        opacity 1.2s ease,
-                        filter 1.2s ease;
-            transform-origin: left center;
+            box-shadow: inset -10px 0 30px rgba(0,0,0,0.8), inset 10px 0 30px rgba(0,0,0,0.8);
+            /* 천이 뒤로 비틀어지며 부드럽게 감기도록 가속도 조정 */
+            transition: transform 1.6s cubic-bezier(0.77, 0, 0.175, 1), 
+                        opacity 1.4s ease, 
+                        box-shadow 1.4s ease;
         }
         
-        .curtain-right {
-            transform-origin: right center;
-        }
+        /* 왼쪽 커튼은 왼쪽 위를 축으로, 오른쪽 커튼은 오른쪽 위를 축으로 회전하며 넘어감 */
+        .curtain-left { transform-origin: left top; }
+        .curtain-right { transform-origin: right top; }
 
-        /* [연출] 조명이 켜지면 커튼이 단순히 밀리는 게 아니라 접히면서 스르륵 넘어감 */
+        /* [핵심 변경] 조명이 켜지면 커튼이 비스듬히 문짝 열리듯 뒤로 돌아가며 걷힙니다 */
         body.light-on .curtain-left {
-            transform: scaleX(0) translateX(-100%);
-            opacity: 0.3;
-            filter: blur(2px);
+            transform: rotateY(-85deg) scaleX(0.1);
+            opacity: 0.1;
+            box-shadow: none;
         }
         body.light-on .curtain-right {
-            transform: scaleX(0) translateX(100%);
-            opacity: 0.3;
-            filter: blur(2px);
+            transform: rotateY(85deg) scaleX(0.1);
+            opacity: 0.1;
+            box-shadow: none;
         }
 
         /* ==========================================
-           3. 상단 조명 스위치 (흰색 선화 스타일)
+           3. 상단 조명 스위치 (최상단 레이어)
            ========================================== */
         .switch-container {
             text-align: center;
             cursor: pointer;
-            z-index: 10;
-            user-select: none;
-            margin-bottom: 50px;
+            z-index: 15;
             background: none;
             border: none;
-            padding: 0;
+            padding: 10px;
+            outline: none;
+            position: relative;
+            margin-bottom: 50px;
+            transition: transform 0.6s ease;
         }
 
         .switch-container svg {
@@ -94,33 +96,35 @@
             stroke-width: 1.5;
             fill: none;
             transition: all 0.4s ease;
-            filter: drop-shadow(0 0 2px rgba(255,255,255,0.3));
+            filter: drop-shadow(0 0 3px rgba(255,255,255,0.4));
         }
 
-        /* 조명이 켜졌을 때 전구 내부가 흰색 네온 형광으로 환하게 빛남 */
+        /* 불이 켜지면 스위치가 깔끔하게 제자리에서 강한 화이트 형광 발산 */
         .switch-container.active svg {
             stroke: #ffffff;
-            fill: rgba(255, 255, 255, 0.1);
-            filter: drop-shadow(0 0 10px #ffffff) drop-shadow(0 0 25px #ffffff);
+            fill: rgba(255, 255, 255, 0.15);
+            filter: drop-shadow(0 0 12px #ffffff) drop-shadow(0 0 30px #ffffff);
         }
 
         /* ==========================================
-           4. 깔끔한 흰색 네온 라인 카테고리 영역
+           4. 깔끔한 화이트 네온 라인 카테고리 영역
            ========================================== */
         .category-zone {
             opacity: 0;
-            transform: translateY(20px);
+            /* 커튼이 넘어간 뒤 무대 뒤편에서 앞으로 전개되는 느낌 부여 */
+            transform: translateZ(-150px) translateY(30px);
             width: 90%;
             max-width: 800px;
             text-align: center;
-            transition: opacity 1s ease, transform 1s ease;
+            transition: opacity 1.2s cubic-bezier(0.165, 0.84, 0.44, 1), 
+                        transform 1.2s cubic-bezier(0.165, 0.84, 0.44, 1);
             z-index: 2;
             visibility: hidden;
         }
 
         body.light-on .category-zone {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateZ(0) translateY(0);
             visibility: visible;
         }
 
@@ -132,7 +136,6 @@
             margin-bottom: 50px;
         }
 
-        /* 상자 없이 아이콘 자체만 노출 */
         .category-icon-btn {
             background: none;
             border: none;
@@ -142,20 +145,20 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            outline: none;
         }
 
-        /* 기본 선화 형태 */
         .category-icon-btn svg {
-            stroke: #777777; /* 평소엔 차분한 회색 선 */
+            stroke: #555555; /* 미선택 시 더 어둡게 처리하여 대비 극대화 */
             stroke-width: 1.8;
             fill: none;
             transition: all 0.3s ease;
         }
 
-        /* 마우스를 올리거나 활성화 시 강렬하고 깔끔한 화이트 네온 형광 처리 */
+        /* 화이트 네온 튜브 효과 */
         .category-icon-btn:hover svg, .category-icon-btn.selected svg {
             stroke: #ffffff;
-            filter: drop-shadow(0 0 8px #ffffff) drop-shadow(0 0 18px #ffffff);
+            filter: drop-shadow(0 0 8px #ffffff) drop-shadow(0 0 20px #ffffff);
             transform: scale(1.12);
         }
 
@@ -164,26 +167,27 @@
            ========================================== */
         .character-list-section {
             display: none;
-            background: #121212; /* 위키 가독성을 위한 다크 그레이 */
-            border: 1px solid #333333;
+            background: #111111;
+            border: 1px solid #2a2a2a;
             padding: 30px;
             border-radius: 4px;
             text-align: left;
-            animation: fadeIn 0.4s ease forwards;
+            animation: fadeInWiki 0.5s ease-out forwards;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        @keyframes fadeInWiki {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .character-list-section h2 {
             margin-top: 0;
             margin-bottom: 15px;
-            border-bottom: 1px solid #444444;
+            border-bottom: 1px solid #333333;
             padding-bottom: 8px;
             color: #ffffff;
-            font-size: 18px;
+            font-size: 17px;
+            font-weight: 600;
         }
 
         .archive-list {
@@ -193,24 +197,19 @@
         }
 
         .archive-item {
-            padding: 12px 8px;
-            border-bottom: 1px solid #222222;
+            padding: 12px 6px;
+            border-bottom: 1px solid #1f1f1f;
         }
 
-        .archive-item:last-child {
-            border-bottom: none;
-        }
-
-        /* 나무위키처럼 깔끔하고 직관적으로 바로 넘어가는 링크 */
         .item-link {
-            color: #3399ff; /* 위키 특유의 블루 링크 컬러감 반영 */
+            color: #2b8be3; /* 조금 더 정돈된 위키 블루 링크 */
             text-decoration: none;
             font-size: 15px;
-            transition: color 0.2s, text-decoration 0.2s;
+            font-weight: 500;
         }
         
         .item-link:hover {
-            color: #66b2ff;
+            color: #4da3ff;
             text-decoration: underline;
         }
     </style>
@@ -270,5 +269,67 @@
         <div class="character-list-section" id="list-cat1">
             <h2>목록: 야구공 관련 데이터</h2>
             <ul class="archive-list">
-                <li class="archive-item">
-                    <a
+                <li class="archive-item"><a href="characters/chara_base_01.html" class="item-link">■ 캐릭터_이름_넣을_곳(링크).html</a></li>
+            </ul>
+        </div>
+
+        <div class="character-list-section" id="list-cat2">
+            <h2>목록: 태양 관련 데이터</h2>
+            <ul class="archive-list">
+                <li class="archive-item"><a href="characters/chara_sun_01.html" class="item-link">■ 캐릭터_이름_넣을_곳(링크).html</a></li>
+            </ul>
+        </div>
+
+        <div class="character-list-section" id="list-cat3">
+            <h2>목록: 버섯 관련 데이터</h2>
+            <ul class="archive-list">
+                <li class="archive-item"><a href="characters/chara_shroom_01.html" class="item-link">■ 캐릭터_이름_넣을_곳(링크).html</a></li>
+            </ul>
+        </div>
+
+        <div class="character-list-section" id="list-cat4">
+            <h2>목록: 몬스터볼 관련 데이터</h2>
+            <ul class="archive-list">
+                <li class="archive-item"><a href="characters/chara_ball_01.html" class="item-link">■ 캐릭터_이름_넣을_곳(링크).html</a></li>
+            </ul>
+        </div>
+
+    </div>
+
+    <script>
+        function toggleStage() {
+            const body = document.body;
+            const lampSwitch = document.getElementById('lampSwitch');
+            
+            if(body.classList.contains('light-on')) {
+                body.classList.remove('light-on');
+                lampSwitch.classList.remove('active');
+                
+                // 목록 일괄 닫기
+                const allLists = document.querySelectorAll('.character-list-section');
+                allLists.forEach(list => list.style.display = 'none');
+                const allCards = document.querySelectorAll('.category-icon-btn');
+                allCards.forEach(card => card.classList.remove('selected'));
+            } else {
+                body.classList.add('light-on');
+                lampSwitch.classList.add('active');
+            }
+        }
+
+        function showCategory(categoryId) {
+            const allLists = document.querySelectorAll('.character-list-section');
+            allLists.forEach(list => list.style.display = 'none');
+
+            const allCards = document.querySelectorAll('.category-icon-btn');
+            allCards.forEach(card => card.classList.remove('selected'));
+
+            const targetList = document.getElementById('list-' + categoryId);
+            if (targetList) {
+                targetList.style.display = 'block';
+                document.getElementById('btn-' + categoryId).classList.add('selected');
+                targetList.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    </script>
+</body>
+</html>
