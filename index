@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curtain Call Archive</title>
+    <style>
+        /* ==========================================
+           1. 전체 레이아웃 & 검정+빨강 테마 스타일
+           ========================================== */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0a0a0a; /* 깊은 검은색 배경 */
+            font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+            color: #ffffff;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* ==========================================
+           2. 무대 커튼 (Curtain) 애니메이션 연출
+           ========================================== */
+        .curtain-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            z-index: 5;
+            pointer-events: none; /* 커튼 뒤의 버튼 클릭 방지 */
+            transition: all 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* 왼쪽/오른쪽으로 갈라지는 커튼 (강렬한 버건디 레드) */
+        .curtain-left, .curtain-right {
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to rgba(0,0,0,0.2), transparent), #8b0000;
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.8);
+            transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+            pointer-events: auto; /* 닫혀있을 땐 클릭 막기용 */
+        }
+
+        /* [핵심 변환] 조명이 켜지면 커튼이 좌우로 걷힘 */
+        body.light-on .curtain-left {
+            transform: translateX(-100%);
+        }
+        body.light-on .curtain-right {
+            transform: translateX(100%);
+        }
+
+        /* ==========================================
+           3. 상단 조명 스위치 (무대 핀조명 느낌)
+           ========================================== */
+        .switch-container {
+            text-align: center;
+            cursor: pointer;
+            z-index: 10; /* 커튼보다 무조건 위에 있어야 다시 닫을 수 있음 */
+            transition: transform 0.8s ease;
+            user-select: none;
+            margin-bottom: 30px;
+        }
+
+        .lamp-icon {
+            font-size: 60px;
+            filter: drop-shadow(0 0 10px rgba(0,0,0,0.9));
+            transition: all 0.5s ease;
+        }
+
+        /* 조명이 켜졌을 때 빨간 무대에 꽂히는 강렬한 핀조명 광채 효과 */
+        .lamp-icon.active {
+            text-shadow: 0 0 20px #ffffff, 0 0 40px #ff3333;
+            filter: drop-shadow(0 0 15px #ff3333);
+            transform: scale(1.05);
+        }
+
+        .switch-hint {
+            font-size: 12px;
+            color: #555;
+            margin-top: 10px;
+            letter-spacing: 4px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        body.light-on .switch-hint {
+            color: #ff3333;
+            text-shadow: 0 0 8px rgba(255, 51, 51, 0.6);
+        }
+
+        /* ==========================================
+           4. 네온 라인 카테고리 아이콘 영역
+           ========================================== */
+        .category-zone {
+            opacity: 0;
+            transform: scale(0.95);
+            width: 90%;
+            max-width: 800px;
+            text-align: center;
+            transition: opacity 1s ease, transform 1s ease;
+            z-index: 2;
+            visibility: hidden; /* 닫혀있을 때 공간 인식 방지 */
+        }
+
+        /* 불이 켜지면 무대 장치들이 등장 */
+        body.light-on .category-zone {
+            opacity: 1;
+            transform: scale(1);
+            visibility: visible;
+        }
+
+        .category-flex {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        /* 박스를 아예 없애고, 흰색 선으로만 그린 SVG 아이콘 스타일 */
+        .category-icon-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* SVG 그래픽 기본 상태 (흰색 라인) */
+        .category-icon-btn svg {
+            stroke: #ffffff;
+            stroke-width: 2;
+            fill: none;
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 0 2px rgba(255,255,255,0.5));
+        }
+
+        /* [마우스 오버 / 선택 시] 붉은빛 형광(네온) 처리 효과 */
+        .category-icon-btn:hover svg, .category-icon-btn.selected svg {
+            stroke: #ff3333;
+            filter: drop-shadow(0 0 8px #ff3333) drop-shadow(0 0 15px #ff3333);
+            transform: scale(1.1);
+        }
+
+        .category-title {
+            font-size: 14px;
+            color: #888;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+        .category-icon-btn:hover .category-title, .category-icon-btn.selected .category-title {
+            color: #ffffff;
+            text-shadow: 0 0 5px rgba(255,255,255,0.8);
+        }
+
+        /* ==========================================
+           5. 하단 캐릭터 리스트 목록화 영역 (강렬한 다크레드 포인트)
+           ========================================== */
+        .character-list-section {
+            display: none;
+            background: rgba(15, 0, 0, 0.85); /* 매우 어두운 붉은빛 검정 */
+            border: 1px solid #ff3333;
+            box-shadow: 0 0 15px rgba(255, 51, 51, 0.2);
+            padding: 30px;
+            border-radius: 6px;
+            text-align: left;
+            animation: slideUp 0.4s ease forwards;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .character-list-section h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ff3333;
+            padding-bottom: 10px;
+            color: #ffffff;
+            font-size: 20px;
+            letter-spacing: 1px;
+        }
+
+        .archive-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .archive-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 10px;
+            border-bottom: 1px solid rgba(255, 51, 51, 0.2);
+        }
+
+        .archive-item:hover {
+            background: rgba(255, 51, 51, 0.08);
+        }
+
+        .item-link {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .item-link:hover {
+            color: #ff3333;
+            text-decoration: underline;
+        }
+
+        .item-tag {
+            font-size: 11px;
+            border: 1px solid #ff3333;
+            color: #ff3333;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .item-meta {
+            font-size: 13px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="curtain-container">
+        <div class="curtain-left"></div>
+        <div class="curtain-right"></div>
+    </div>
+
+    <div class="switch-container" id="lampSwitch" onclick="toggleStage()">
+        <div class="lamp-icon" id="lampIcon">💡</div>
+        <div class="switch-hint" id="switchHint">Click to Open Curtain</div>
+    </div>
+
+    <div class="category-zone" id="categoryZone">
+        <div class="category-flex">
+            
+            <button class="category-icon-btn" id="btn-cat1" onclick="showCategory('cat1')">
+                <svg width="60" height="60" viewBox="0 0 60 60">
+                    <circle cx="30" cy="30" r="26" />
+                    <path d="M12,18 C20,24 20,36 12,42" />
+                    <path d="M48,18 C40,24 40,36 48,42" />
+                </svg>
+                <span class="category-title">야구공 카테고리</span>
+            </button>
+
+            <button class="category-icon-btn" id="btn-cat2" onclick="showCategory('cat2')">
+                <svg width="60" height="60" viewBox="0 0 60 60">
+                    <circle cx="30" cy="30" r="14" />
+                    <path d="M30,5 L30,11 M30,49 L30,55 M5,30 L11,30 M49,30 L55,30 M12,12 L17,17 M43,43 L48,48 M12,43 L17,38 M43,12 L48,17" />
+                </svg>
+                <span class="category-title">태양 카테고리</span>
+            </button>
+
+            <button class="category-icon-btn" id="btn-cat3" onclick="showCategory('cat3')">
+                <svg width="60" height="60" viewBox="0 0 60 60">
+                    <path d="M10,32 C10,15 50,15 50,32 Z" />
+                    <path d="M22,32 L22,50 C22,54 38,54 38,50 L38,32" />
+                    <line x1="10" y1="32" x2="50" y2="32" />
+                </svg>
+                <span class="category-title">버섯 카테고리</span>
+            </button>
+
+            <button class="category-icon-btn" id="btn-cat4" onclick="showCategory('cat4')">
+                <svg width="60" height="60" viewBox="0 0 60 60">
+                    <circle cx="30" cy="30" r="26" />
+                    <line x1="4" y1="30" x2="56" y2="30" />
+                    <circle cx="30" cy="30" r="7" style="fill: #0a0a0a;" />
+                    <circle cx="30" cy="30" r="3" />
+                </svg>
+                <span class="category-title">몬스터볼 카테고리</span>
+            </button>
+
+        </div>
+
+        <div class="character-list-section" id="list-cat1">
+            <h2>⚾ BASEBALL ARCHIVE</h2>
+            <ul class="archive-list">
+                <li class="archive-item">
+                    <a href="#" class="item-link">▶ 아직 연결된 캐릭터 파일이 없습니다.html</a>
+                    <span class="item-tag">TAG</span>
+                    <span class="item-meta">2026-05-30</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="character-list-section" id="list-cat2">
+            <h2>☀️ SUN ARCHIVE</h2>
+            <ul class="archive-list">
+                <li class="archive-item">
+                    <a href="#" class="item-link">▶ 아직 연결된 캐릭터 파일이 없습니다.html</a>
+                    <span class="item-tag">TAG</span>
+                    <span class="item-meta">2026-05-30</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="character-list-section" id="list-cat3">
+            <h2>🍄 MUSHROOM ARCHIVE</h2>
+            <ul class="archive-list">
+                <li class="archive-item">
+                    <a href="#" class="item-link">▶ 아직 연결된 캐릭터 파일이 없습니다.html</a>
+                    <span class="item-tag">TAG</span>
+                    <span class="item-meta">2026-05-30</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="character-list-section" id="list-cat4">
+            <h2>🔴 POKEBALL ARCHIVE</h2>
+            <ul class="archive-list">
+                <li class="archive-item">
+                    <a href="#" class="item-link">▶ 아직 연결된 캐릭터 파일이 없습니다.html</a>
+                    <span class="item-tag">TAG</span>
+                    <span class="item-meta">2026-05-30</span>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <script>
+        // 1. 커튼 열고 닫기 (토글 방식)
+        function toggleStage() {
+            const body = document.body;
+            const lampIcon = document.getElementById('lampIcon');
+            const hint = document.getElementById('switchHint');
+            
+            if(body.classList.contains('light-on')) {
+                // 불이 켜져있었다면 무대를 끄고 커튼을 닫음
+                body.classList.remove('light-on');
+                lampIcon.classList.remove('active');
+                hint.innerText = "Click to Open Curtain";
+                
+                // 열려있던 하단 리스트도 일괄 초기화
+                const allLists = document.querySelectorAll('.character-list-section');
+                allLists.forEach(list => list.style.display = 'none');
+                const allCards = document.querySelectorAll('.category-icon-btn');
+                allCards.forEach(card => card.classList.remove('selected'));
+            } else {
+                // 불을 켜고 커튼을 엶
+                body.classList.add('light-on');
+                lampIcon.classList.add('active');
+                hint.innerText = "Click to Close Curtain";
+            }
+        }
+
+        // 2. 카테고리 클릭 시 목록 노출
+        function showCategory(categoryId) {
+            const allLists = document.querySelectorAll('.character-list-section');
+            allLists.forEach(list => list.style.display = 'none');
+
+            const allCards = document.querySelectorAll('.category-icon-btn');
+            allCards.forEach(card => card.classList.remove('selected'));
+
+            const targetList = document.getElementById('list-' + categoryId);
+            if (targetList) {
+                targetList.style.display = 'block';
+                document.getElementById('btn-' + categoryId).classList.add('selected');
+                targetList.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    </script>
+</body>
+</html>
