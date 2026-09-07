@@ -317,6 +317,57 @@
             margin-top: 0;
         }
 
+        /* 비디오 카드 및 버튼 컴포넌트 */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 비율 */
+            height: 0;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            margin-top: 14px;
+            margin-bottom: 16px;
+            background: #000000;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .yt-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 18px;
+            background-color: #ffffff;
+            color: #1f2937;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .yt-button:hover {
+            background-color: #f9fafb;
+            border-color: #9ca3af;
+            color: #000000;
+        }
+
+        .yt-icon {
+            width: 18px;
+            height: 18px;
+            fill: #ff0000;
+        }
+
         footer {
             text-align: center;
             margin-top: 60px;
@@ -649,6 +700,113 @@
                                     </tbody>
                                 </table>
                             </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. 폐 건강과 빠른 회복을 위한 호흡 재활 안내 -->
+        <div class="accordion-item">
+            <button class="accordion-header">
+                <span>4. 폐 건강과 빠른 회복을 위한 호흡 재활 안내</span>
+                <span class="accordion-icon">▼</span>
+            </button>
+            <div class="accordion-content">
+                <div class="accordion-body">
+                    
+                    <div class="text-box">
+                        <p>수술과 전신마취 후에는 폐포가 쪼그라들거나 가래가 고이기 쉬우며, Chest AP(흉부 X선) 검사에서 폐 음영이 관찰되는 경우가 있습니다. 이는 규칙적인 심호흡과 유효 기침(가래 배출)을 통해 폐를 충분히 확장해주면 원활하게 회복될 수 있습니다.</p>
+                    </div>
+
+                    <!-- 4-1. 심호흡 운동 -->
+                    <div class="sub-accordion-item">
+                        <button class="sub-accordion-header">
+                            <span>1. 심호흡 운동 (입술 오므려 숨 쉬기 & 복식 호흡)</span>
+                            <span class="accordion-icon">▼</span>
+                        </button>
+                        <div class="sub-accordion-content">
+                            <p style="margin-bottom: 10px; color: #4b5563;">폐 구석구석까지 공기를 채워 무기폐를 예방하고 폐활량을 늘려주는 가장 기본적이고 중요한 운동입니다.</p>
+                            
+                            <div class="sub-section-title">운동 방법</div>
+                            <ul>
+                                <li>편안하게 앉거나 상체를 약간 세운 상태에서 어깨와 목의 힘을 뺍니다.</li>
+                                <li>입을 다물고 코로 3초 동안 숨을 천천히 들이마십니다. (배가 부풀어 오르는 느낌)</li>
+                                <li>숨을 들이마신 후 2~3초간 잠시 멈춥니다.</li>
+                                <li>촛불을 불어 끄듯 입술을 둥글게 모아 6초 동안 천천히 길게 숨을 내붑니다. (들이마신 시간의 2배로 내쉬기)</li>
+                            </ul>
+                            
+                            <div class="sub-section-title">권장 횟수</div>
+                            <p>깨어있는 동안 <b>1시간마다 5~10회씩</b> 꾸준히 반복합니다.</p>
+                        </div>
+                    </div>
+
+                    <!-- 4-2. 유효 기침 -->
+                    <div class="sub-accordion-item">
+                        <button class="sub-accordion-header">
+                            <span>2. 수술 부위를 보호하며 하는 '유효 기침'</span>
+                            <span class="accordion-icon">▼</span>
+                        </button>
+                        <div class="sub-accordion-content">
+                            <p style="margin-bottom: 10px; color: #4b5563;">폐 깊은 곳에 남아있는 가래를 배출하여 폐렴 등 합병증을 막는 방법입니다. 그냥 큼큼거리는 기침은 상처 통증만 유발하므로 '유효 기침' 기술을 활용해야 합니다.</p>
+                            
+                            <div class="sub-section-title">시행 방법</div>
+                            <ul>
+                                <li><b>상처 보호하기:</b> 복강경 수술 부위에 통증이 생기지 않도록 쿠션이나 베개를 배(수술 부위)에 대고 양팔로 살짝 감싸 안아 지지해 줍니다.</li>
+                                <li>상체를 약간 앞으로 굽힙니다.</li>
+                                <li>코로 깊게 숨을 들이마신 뒤, 배에 살짝 힘을 주면서 <b>"하-앗!"</b> 하고 강하게 숨을 내뱉으며 기침을 2~3회 시행합니다.</li>
+                                <li>뱉어낸 가래는 참지 말고 휴지에 받아 버립니다.</li>
+                            </ul>
+
+                            <div class="sub-section-title" style="color: #4b5563;">주의사항</div>
+                            <p>통증이 심해 기침하기 힘들 때는 처방된 진통제를 복용한 후 시도하시면 한결 편안하게 하실 수 있습니다.</p>
+                        </div>
+                    </div>
+
+                    <!-- 4-3. 등 두드리기 -->
+                    <div class="sub-accordion-item">
+                        <button class="sub-accordion-header">
+                            <span>3. 보호자(가족)가 도와주는 등 두드리기</span>
+                            <span class="accordion-icon">▼</span>
+                        </button>
+                        <div class="sub-accordion-content">
+                            <p style="margin-bottom: 10px; color: #4b5563;">가족분들이 환자의 가래 배출을 도울 수 있는 간단하고 효과적인 방법입니다.</p>
+                            
+                            <div class="sub-section-title">도움 방법</div>
+                            <ul>
+                                <li>환자가 상체를 약간 숙이고 앉은 상태에서, 보호자는 손바닥을 오목하게 컵 모양으로 굽힙니다.</li>
+                                <li>환자의 등 뒤에서 <b>아래에서 위 방향으로</b> 톡톡 가볍고 둔탁한 소리가 나게 두드려 줍니다.</li>
+                                <li>이는 폐 벽에 붙은 가래가 쉽게 떨어져 나오도록 도와줍니다.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 4-4. 공인 기관 참고 영상 -->
+                    <div class="sub-accordion-item">
+                        <button class="sub-accordion-header">
+                            <span>공인 기관 호흡재활 교육 영상</span>
+                            <span class="accordion-icon">▼</span>
+                        </button>
+                        <div class="sub-accordion-content">
+                            <p style="margin-bottom: 10px;">국립암센터에서 제공하는 수술 후 호흡재활 가이드 영상입니다. 영상 동작을 따라 하시며 정확한 자세로 연습해 보세요.</p>
+                            
+                            <!-- 유튜브 영상 Embed -->
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/H5HB1HwwDKM" title="[암재활 운동] 전신마취 수술 후 호흡재활 운동 - 본 운동" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+
+                            <p style="font-size: 14px; color: #6b7280; margin-bottom: 12px;">
+                                <b>주요 내용:</b> 입술 오므려 호흡하기, 횡격막 호흡, 수술 부위를 보호하며 가래 배출하는 기침법(허핑 및 기침) 시연
+                            </p>
+
+                            <!-- 유튜브 공식 연결 버튼 -->
+                            <a href="https://www.youtube.com/watch?v=H5HB1HwwDKM" target="_blank" class="yt-button">
+                                <svg class="yt-icon" viewBox="0 0 24 24">
+                                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                                </svg>
+                                YouTube에서 영상 보기
+                            </a>
                         </div>
                     </div>
 
