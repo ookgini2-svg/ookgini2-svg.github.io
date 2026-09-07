@@ -5,99 +5,150 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>자궁내막암 환자 및 가족을 위한 건강 회복 가이드</title>
     
-    <!-- 폰트 추가: Google Fonts에서 'Gowun Batang' (가독성이 좋은 본문용 Serif)와 'Pretendard' (현대적인 Sans-serif)를 연결합니다. -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Pretendard:wght@400;500;700&display=swap" rel="stylesheet">
     
     <style>
-        /* [Pretendard 폰트 우선 적용] */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
             font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Malgun Gothic', 'Noto Sans KR', sans-serif;
             line-height: 1.8;
             color: #333;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 30px;
             background-color: #f7f9fc;
         }
 
-        /* [제목용 서체: Pretendard 700 (BOLD)] */
-        h1, h2, h3 {
-            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Malgun Gothic', 'Noto Sans KR', sans-serif;
+        /* 1. 히어로(Hero) 커버 이미지 영역 */
+        .hero-section {
+            position: relative;
+            height: 100vh; /* 화면 전체 높이 커버 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        /* 배경 이미지 설정 및 패럴랙스 효과 */
+        .hero-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-image: url('https://i.ibb.co/0R6MQ7HK/image.jpg'); /* 이미지 직접 링크 */
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+            will-change: opacity, transform;
+            transition: opacity 0.1s linear;
+        }
+
+        /* 이미지 위 어두운 오버레이 레이어 */
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.7));
+        }
+
+        /* 메인 제목 텍스트 */
+        .hero-title {
+            position: relative;
+            z-index: 1;
+            padding: 0 20px;
+        }
+
+        .hero-title h1 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            letter-spacing: -0.5px;
+        }
+
+        .hero-title p {
+            font-family: 'Gowun Batang', serif;
+            font-size: 18px;
+            opacity: 0.9;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        }
+
+        /* 아래로 스크롤 안내 화살표 */
+        .scroll-down-arrow {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+            color: white;
+            font-size: 24px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); }
+            40% { transform: translate(-50%, -10px); }
+            60% { transform: translate(-50%, -5px); }
+        }
+
+        /* 2. 스크롤하면 올려오는 컨텐츠 영역 */
+        .main-content {
+            position: relative;
+            z-index: 2;
+            background-color: #f7f9fc;
+            padding: 60px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            border-radius: 24px 24px 0 0; /* 위쪽 모서리 곡선 처리 */
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.15);
+        }
+
+        /* 카드 및 폰트 스타일 */
+        h2, h3 {
+            font-family: 'Pretendard', sans-serif;
             font-weight: 700;
         }
 
-        /* [본문용 서체: Gowun Batang] */
         p, li, b, div, footer {
             font-family: 'Gowun Batang', serif;
             font-weight: 400;
         }
 
-        b, .bold {
-            font-weight: 700;
-        }
-
-        header {
-            background-color: #d8edf5;
-            padding: 35px;
-            border-radius: 16px;
-            text-align: center;
-            border-bottom: 4px solid #75b0cf;
-            margin-bottom: 40px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        }
-        
-        header h1 {
-            color: #1e455e;
-            font-size: 28px;
-            margin-bottom: 12px;
-            margin-top: 0;
-            letter-spacing: -0.5px; /* 제목 자간 조정 */
-        }
-        
-        .intro {
-            font-size: 16px;
-            color: #555;
-            margin-bottom: 0;
-            line-height: 1.6;
-        }
-        
         .card {
             background: white;
-            padding: 25px;
+            padding: 28px;
             margin-bottom: 25px;
-            border-radius: 14px;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
             border-left: 6px solid #75b0cf;
-            transition: transform 0.2s ease;
         }
 
-        .card:hover {
-            transform: translateY(-3px); /* 마우스 올렸을 때 살짝 뜨는 효과 */
-        }
-        
         h2 {
             color: #1e455e;
-            font-size: 20px;
+            font-size: 22px;
             margin-top: 0;
             margin-bottom: 15px;
-            letter-spacing: -0.3px;
         }
-        
+
         ul {
             padding-left: 20px;
-            margin-top: 0;
-            margin-bottom: 0;
         }
-        
+
         li {
             margin-bottom: 10px;
-            font-size: 15px;
+            font-size: 16px;
         }
-        
-        li:last-child { margin-bottom: 0; }
-        
+
         footer {
             text-align: center;
             margin-top: 50px;
@@ -106,41 +157,79 @@
             color: #888;
             border-top: 1px solid #ddd;
         }
+
+        @media (max-width: 600px) {
+            .hero-title h1 { font-size: 28px; }
+            .hero-title p { font-size: 16px; }
+            .main-content { padding: 40px 15px; }
+        }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>자궁내막암 건강 회복 가이드북</h1>
-        <p class="intro">환자분과 가족분들이 함께 마음을 모아 건강한 일상을 되찾을 수 있도록 돕는 안내서입니다.</p>
-    </header>
-
-    <div class="card">
-        <h2>📖 자궁내막암이란?</h2>
-        <p>자궁의 가장 안쪽 막(자궁내막)에 발생하는 암으로, 조기에 발견할 경우 치료 경과가 매우 양호한 편입니다. 규칙적인 검진과 회복 관리가 중요합니다.</p>
+    <!-- 히어로 섹션 (이미지 배경 + 제목) -->
+    <div class="hero-section">
+        <div class="hero-bg" id="heroBg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-title" id="heroTitle">
+            <h1>자궁내막암 건강 회복 가이드북</h1>
+            <p>환자분과 가족분들이 함께 마음을 모아 건강한 일상을 되찾을 수 있도록 돕는 안내서입니다.</p>
+        </div>
+        <div class="scroll-down-arrow">↓</div>
     </div>
 
-    <div class="card">
-        <h2>💊 치료 및 수술 후 회복 관리</h2>
-        <ul>
-            <li><b>충분한 휴식:</b> 수술 후 초기에는 무리한 신체 활동을 피하고 충분한 수면을 취하세요.</li>
-            <li><b>상처 및 출혈 관리:</b> 수술 부위의 이상 유무와 질 출혈 양상을 정기적으로 확인합니다.</li>
-            <li><b>통증 조절:</b> 처방받은 약물을 안내에 따라 규칙적으로 복용하세요.</li>
-        </ul>
-    </div>
+    <!-- 스크롤 시 올려오는 본문 컨텐츠 -->
+    <main class="main-content">
 
-    <div class="card">
-        <h2>👨‍👩‍👧 가족(보호자) 가이드</h2>
-        <ul>
-            <li>환자가 정서적으로 불안해하지 않도록 따뜻한 대화와 경청을 이어가 주세요.</li>
-            <li>외래 진료 및 정기 검진 일정을 함께 챙겨주세요.</li>
-            <li>갑작스러운 고열이나 심한 통증 발생 시 즉시 병원에 연락할 수 있도록 대비합니다.</li>
-        </ul>
-    </div>
+        <div class="card">
+            <h2>📖 자궁내막암이란?</h2>
+            <p>자궁의 가장 안쪽 막(자궁내막)에 발생하는 암으로, 조기에 발견할 경우 치료 경과가 매우 양호한 편입니다. 규칙적인 검진과 회복 관리가 중요합니다.</p>
+        </div>
 
-    <footer>
-        <p>© 2026 자궁내막암 환자/가족 교육 가이드. All rights reserved.</p>
-    </footer>
+        <div class="card">
+            <h2>💊 치료 및 수술 후 회복 관리</h2>
+            <ul>
+                <li><b>충분한 휴식:</b> 수술 후 초기에는 무리한 신체 활동을 피하고 충분한 수면을 취하세요.</li>
+                <li><b>상처 및 출혈 관리:</b> 수술 부위의 이상 유무와 질 출혈 양상을 정기적으로 확인합니다.</li>
+                <li><b>통증 조절:</b> 처방받은 약물을 안내에 따라 규칙적으로 복용하세요.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>👨‍👩‍👧 가족(보호자) 가이드</h2>
+            <ul>
+                <li>환자가 정서적으로 불안해하지 않도록 따뜻한 대화와 경청을 이어가 주세요.</li>
+                <li>외래 진료 및 정기 검진 일정을 함께 챙겨주세요.</li>
+                <li>갑작스러운 고열이나 심한 통증 발생 시 즉시 병원에 연락할 수 있도록 대비합니다.</li>
+            </ul>
+        </div>
+
+        <footer>
+            <p>© 2026 자궁내막암 환자/가족 교육 가이드. All rights reserved.</p>
+        </footer>
+
+    </main>
+
+    <!-- 스크롤 시 이미지가 불투명해지도록 제어하는 자바스크립트 -->
+    <script>
+        const heroBg = document.getElementById('heroBg');
+        const heroTitle = document.getElementById('heroTitle');
+
+        window.addEventListener('scroll', () => {
+            const scrollPosition = window.scrollY;
+            const windowHeight = window.innerHeight;
+
+            // 스크롤 양에 따른 투명도 계산 (0 ~ 1)
+            let opacity = 1 - (scrollPosition / (windowHeight * 0.8));
+            if (opacity < 0) opacity = 0;
+
+            // 배경 이미지 투명도 조절
+            heroBg.style.opacity = opacity;
+            
+            // 타이틀도 같이 천천히 흐려짐
+            heroTitle.style.opacity = opacity;
+        });
+    </script>
 
 </body>
 </html>
