@@ -18,7 +18,7 @@
         }
 
         /* 전체 명조체(Gowun Batang) 일괄 적용 */
-        body, button, input, select, textarea, h1, h2, h3, p, li, span, div, footer {
+        body, button, input, select, textarea, h1, h2, h3, p, li, span, div, footer, table, th, td {
             font-family: 'Gowun Batang', serif !important;
         }
 
@@ -112,7 +112,7 @@
             box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.08);
         }
 
-        /* 아코디언(토글) 토큰 스타일 */
+        /* 메인 아코디언(토글) 토큰 스타일 */
         .accordion-item {
             background: #ffffff;
             border: 1px solid #e5e7eb;
@@ -154,7 +154,7 @@
             transition: transform 0.3s ease;
         }
 
-        .accordion-item.active .accordion-icon {
+        .accordion-item.active > .accordion-header .accordion-icon {
             transform: rotate(180deg);
         }
 
@@ -166,7 +166,7 @@
             border-top: 1px solid transparent;
         }
 
-        .accordion-item.active .accordion-content {
+        .accordion-item.active > .accordion-content {
             border-top-color: #f3f4f6;
             padding: 24px 28px;
         }
@@ -191,6 +191,97 @@
             margin-bottom: 0;
         }
 
+        /* 하위 토큰(서브 아코디언) 스타일 */
+        .sub-accordion-item {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            margin-top: 12px;
+            overflow: hidden;
+        }
+
+        .sub-accordion-header {
+            width: 100%;
+            padding: 14px 18px;
+            background: #ffffff;
+            border: none;
+            outline: none;
+            text-align: left;
+            font-size: 16px;
+            font-weight: 700;
+            color: #374151;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.2s ease;
+        }
+
+        .sub-accordion-header:hover {
+            background-color: #f8fafc;
+        }
+
+        .sub-accordion-item.active > .sub-accordion-header .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        .sub-accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease;
+            background-color: #ffffff;
+            border-top: 1px solid transparent;
+        }
+
+        .sub-accordion-item.active > .sub-accordion-content {
+            border-top-color: #f1f5f9;
+            padding: 18px 20px;
+        }
+
+        /* 모노톤 테이블 디자인 */
+        .info-table-wrapper {
+            overflow-x: auto;
+            margin-top: 12px;
+        }
+
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 15px;
+            text-align: left;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+        }
+
+        .info-table th {
+            background-color: #f3f4f6;
+            color: #1f2937;
+            font-weight: 700;
+            padding: 12px 14px;
+            border-bottom: 1px solid #d1d5db;
+            white-space: nowrap;
+        }
+
+        .info-table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid #e5e7eb;
+            color: #4b5563;
+            vertical-align: top;
+        }
+
+        .info-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .text-box {
+            background-color: #ffffff;
+            border-left: 3px solid #6b7280;
+            padding: 14px 18px;
+            margin-bottom: 16px;
+            border-radius: 0 6px 6px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+        }
+
         footer {
             text-align: center;
             margin-top: 60px;
@@ -205,7 +296,8 @@
             .hero-title p { font-size: 15px; }
             .main-content { padding: 40px 15px; }
             .accordion-header { padding: 18px 20px; font-size: 17px; }
-            .accordion-item.active .accordion-content { padding: 20px; }
+            .accordion-item.active > .accordion-content { padding: 20px; }
+            .info-table th, .info-table td { padding: 10px 10px; font-size: 14px; }
         }
     </style>
 </head>
@@ -233,7 +325,85 @@
             </button>
             <div class="accordion-content">
                 <div class="accordion-body">
-                    <p>자궁의 가장 안쪽 막(자궁내막)에 발생하는 악성 종양입니다. 여성 호르몬 균형의 변화, 비만, 연령 등이 주요 요인으로 알려져 있으며, 질 출혈 등 이상 증상이 비교적 초기에 나타나 조기 발견 시 치료 성과가 매우 우수한 암에 속합니다.</p>
+                    
+                    <!-- 개요 안냇글 -->
+                    <div class="text-box">
+                        <p>자궁 내부의 벽을 이루는 '자궁내막'에 악성 종양이 생기는 질환입니다. 자궁은 크게 아이가 자라는 공간인 내막과 이를 둘러싼 두꺼운 근육층으로 나뉘는데, 자궁내막암은 암세포가 이 내막에서 시작되어 점차 자궁 근육층으로 침윤해 들어가는 특징을 가집니다.</p>
+                    </div>
+
+                    <!-- 하위 토큰 1: 발생 원인 및 위험 요인 -->
+                    <div class="sub-accordion-item">
+                        <button class="sub-accordion-header">
+                            <span>발생 원인 및 위험 요인</span>
+                            <span class="accordion-icon">▼</span>
+                        </button>
+                        <div class="sub-accordion-content">
+                            <p style="margin-bottom: 12px; color: #4b5563;">자궁내막암은 주로 여성호르몬인 에스트로겐의 과도한 자극과 연관이 깊습니다.</p>
+                            <ul>
+                                <li><b>호르몬 불균형:</b> 프로게스테론의 방어 없이 에스트로겐에 지속해서 노출될 때 발생 위험이 커집니다.</li>
+                                <li><b>신체적 요인:</b> 비만(가장 주요한 위험 요인), 당뇨, 고혈압이 있는 경우</li>
+                                <li><b>생식 관련 요인:</b> 이른 초경, 늦은 폐경, 임신/출산 경험이 없는 경우</li>
+                                <li><b>유전적 요인:</b> 가족 중 자궁내막암, 대장암(린치 증후군) 등의 내력이 있는 경우</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 하위 토큰 2: 주요 증상 -->
+                    <div class="sub-accordion-item">
+                        <button class="sub-accordion-header">
+                            <span>주요 증상</span>
+                            <span class="accordion-icon">▼</span>
+                        </button>
+                        <div class="sub-accordion-content">
+                            <p style="margin-bottom: 12px; color: #4b5563;">자궁내막암은 비교적 초기부터 명확한 신호를 보내기 때문에 조기 발견율이 높은 편입니다.</p>
+                            <ul>
+                                <li><b>질 출혈 (가장 흔한 증상):</b> 폐경 후 갑작스러운 출혈이 있거나, 폐경 전 월경량이 평소보다 지나치게 많고 월경 주기가 불규칙해진 경우</li>
+                                <li><b>분비물 이상:</b> 질 분비물의 양이 늘어나거나 악취, 핏빛 분비물이 동반되는 경우</li>
+                                <li><b>통증 및 기타:</b> 질환이 진행됨에 따라 골반 통증, 하복부 압박감, 체중 감소 등이 나타날 수 있음</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 하위 토큰 3: 시술/수술 내용 안내 -->
+                    <div class="sub-accordion-item">
+                        <button class="sub-accordion-header">
+                            <span>시술/수술 내용 안내 (복강경 수술)</span>
+                            <span class="accordion-icon">▼</span>
+                        </button>
+                        <div class="sub-accordion-content">
+                            <p style="margin-bottom: 12px; color: #4b5563;">이번 수술은 배를 크게 개복하지 않고, 배꼽과 하복부에 작은 구멍을 뚫어 카메라와 수술 도구를 넣어 진행하는 복강경 수술로 안전하게 시행되었습니다. 수술의 상세 항목은 다음과 같습니다.</p>
+                            
+                            <div class="info-table-wrapper">
+                                <table class="info-table">
+                                    <thead>
+                                        <tr>
+                                            <th>수술 항목</th>
+                                            <th>한글 명칭</th>
+                                            <th>설명</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><b>TLH</b></td>
+                                            <td>복강경하 전자궁 절제술</td>
+                                            <td>복강경을 통해 자궁 경부(목)와 자궁 체부(몸통) 전체를 안전하게 제거했습니다.</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>BSO</b></td>
+                                            <td>양측 난소 난관 절제술</td>
+                                            <td>재발 위험을 줄이고 호르몬 자극을 차단하기 위해 양쪽 난소와 난관을 함께 절제했습니다.</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>BSLND</b></td>
+                                            <td>양측 골반 림프절 절제술</td>
+                                            <td>암세포의 전이 여부를 확인하고 완전한 치료를 위해 양쪽 골반 주변의 림프절을 선별적으로 절제했습니다.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -295,33 +465,48 @@
             heroTitle.style.opacity = opacity;
         });
 
-        const accordionHeaders = document.querySelectorAll('.accordion-header');
+        // 상위 및 하위 토큰 통합 제어 함수
+        function initAccordion(selector) {
+            const headers = document.querySelectorAll(selector);
 
-        accordionHeaders.forEach(header => {
-            header.addEventListener('click', () => {
-                const item = header.parentElement;
-                const content = item.querySelector('.accordion-content');
+            headers.forEach(header => {
+                header.addEventListener('click', (e) => {
+                    e.stopPropagation(); // 이벤트 전파 방지
+                    const item = header.parentElement;
+                    const content = item.querySelector(item.classList.contains('accordion-item') ? '.accordion-content' : '.sub-accordion-content');
 
-                if (item.classList.contains('active')) {
-                    // 닫을 때: 현재 실제 높이를 잡은 후 0으로 줄임
-                    content.style.maxHeight = content.scrollHeight + "px";
-                    setTimeout(() => {
-                        item.classList.remove('active');
-                        content.style.maxHeight = null;
-                    }, 10);
-                } else {
-                    // 열 때: 높이를 계산해 펼치고, 완료 후 제한(none)을 풀어 잘림 방지
-                    item.classList.add('active');
-                    content.style.maxHeight = content.scrollHeight + "px";
-                    
-                    setTimeout(() => {
-                        if (item.classList.contains('active')) {
-                            content.style.maxHeight = 'none';
-                        }
-                    }, 350); // 애니메이션 완료 시점
-                }
+                    if (item.classList.contains('active')) {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                        setTimeout(() => {
+                            item.classList.remove('active');
+                            content.style.maxHeight = null;
+                            updateParentHeight(item);
+                        }, 10);
+                    } else {
+                        item.classList.add('active');
+                        content.style.maxHeight = content.scrollHeight + "px";
+                        
+                        setTimeout(() => {
+                            if (item.classList.contains('active')) {
+                                content.style.maxHeight = 'none';
+                            }
+                            updateParentHeight(item);
+                        }, 350);
+                    }
+                });
             });
-        });
+        }
+
+        // 하위 토큰이 열릴 때 상위 토큰 높이가 잘리지 않도록 동적 보정
+        function updateParentHeight(childItem) {
+            const parentContent = childItem.closest('.accordion-content');
+            if (parentContent && parentContent.parentElement.classList.contains('active')) {
+                parentContent.style.maxHeight = 'none';
+            }
+        }
+
+        initAccordion('.accordion-header');
+        initAccordion('.sub-accordion-header');
     </script>
 
 </body>
