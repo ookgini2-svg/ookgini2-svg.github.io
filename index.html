@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>자궁내막암 환자 및 가족을 위한 건강 회복 가이드</title>
+    <title>자궁내막암 건강 회복 가이드북</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Pretendard:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         * {
@@ -20,48 +20,47 @@
         body {
             font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Malgun Gothic', 'Noto Sans KR', sans-serif;
             line-height: 1.8;
-            color: #333;
-            background-color: #f7f9fc;
+            color: #2c2c2c;
+            background-color: #f2f3f5; /* 모노톤 기본 배경 */
         }
 
-        /* 1. 히어로(Hero) 커버 이미지 영역 */
+        /* 1. 히어로 Cover 영역 */
         .hero-section {
             position: relative;
-            height: 100vh; /* 화면 전체 높이 커버 */
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             text-align: center;
-            color: white;
+            color: #ffffff;
             overflow: hidden;
         }
 
-        /* 배경 이미지 설정 및 패럴랙스 효과 */
         .hero-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100vh;
-            background-image: url('https://i.ibb.co/0R6MQ7HK/image.jpg'); /* 이미지 직접 링크 */
+            background-image: url('https://i.ibb.co/0R6MQ7HK/image.jpg');
             background-size: cover;
             background-position: center;
             z-index: -1;
-            will-change: opacity, transform;
+            filter: grayscale(10%); /* 이미지 톤을 약간 억제 */
+            will-change: opacity;
             transition: opacity 0.1s linear;
         }
 
-        /* 이미지 위 어두운 오버레이 레이어 */
+        /* 흑백/회색톤 오버레이 */
         .hero-overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.7));
+            background: linear-gradient(to bottom, rgba(30, 32, 35, 0.4), rgba(20, 22, 25, 0.8));
         }
 
-        /* 메인 제목 텍스트 */
         .hero-title {
             position: relative;
             z-index: 1;
@@ -69,149 +68,224 @@
         }
 
         .hero-title h1 {
-            font-size: 36px;
+            font-size: 34px;
             font-weight: 700;
-            margin-bottom: 15px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            margin-bottom: 16px;
             letter-spacing: -0.5px;
+            color: #f8f9fa;
         }
 
         .hero-title p {
             font-family: 'Gowun Batang', serif;
-            font-size: 18px;
-            opacity: 0.9;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+            font-size: 17px;
+            color: #d1d5db;
         }
 
-        /* 아래로 스크롤 안내 화살표 */
         .scroll-down-arrow {
             position: absolute;
-            bottom: 30px;
+            bottom: 35px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 1;
-            color: white;
-            font-size: 24px;
+            color: #9ca3af;
+            font-size: 20px;
             animation: bounce 2s infinite;
         }
 
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); }
-            40% { transform: translate(-50%, -10px); }
-            60% { transform: translate(-50%, -5px); }
+            40% { transform: translate(-50%, -8px); }
+            60% { transform: translate(-50%, -4px); }
         }
 
-        /* 2. 스크롤하면 올려오는 컨텐츠 영역 */
+        /* 2. 스크롤 본문 컨텐츠 영역 */
         .main-content {
             position: relative;
             z-index: 2;
-            background-color: #f7f9fc;
-            padding: 60px 20px;
+            background-color: #f2f3f5; /* 모노톤 회색 배경 */
+            padding: 70px 20px;
             max-width: 800px;
             margin: 0 auto;
-            border-radius: 24px 24px 0 0; /* 위쪽 모서리 곡선 처리 */
-            box-shadow: 0 -10px 30px rgba(0,0,0,0.15);
+            border-radius: 20px 20px 0 0;
+            box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.08);
         }
 
-        /* 카드 및 폰트 스타일 */
-        h2, h3 {
+        /* 아코디언(토글) 토큰 스타일 */
+        .accordion-item {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .accordion-item:hover {
+            border-color: #9ca3af;
+        }
+
+        /* 토큰 제목 버튼 */
+        .accordion-header {
+            width: 100%;
+            padding: 22px 28px;
+            background: #ffffff;
+            border: none;
+            outline: none;
+            text-align: left;
             font-family: 'Pretendard', sans-serif;
-            font-weight: 700;
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.2s ease;
         }
 
-        p, li, b, div, footer {
+        .accordion-header:hover {
+            background-color: #f9fafb;
+        }
+
+        /* 펼침/접힘 화살표 표시 */
+        .accordion-icon {
+            font-size: 14px;
+            color: #6b7280;
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-item.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        /* 토큰 내부 서브 내용 */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease;
+            background-color: #fafafa;
+            border-top: 1px solid transparent;
+        }
+
+        .accordion-item.active .accordion-content {
+            border-top-color: #f3f4f6;
+            padding: 24px 28px;
+        }
+
+        .accordion-body p, 
+        .accordion-body li, 
+        .accordion-body div {
             font-family: 'Gowun Batang', serif;
-            font-weight: 400;
+            font-size: 15px;
+            color: #374151;
+            line-height: 1.8;
         }
 
-        .card {
-            background: white;
-            padding: 28px;
-            margin-bottom: 25px;
-            border-radius: 16px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-            border-left: 6px solid #75b0cf;
-        }
-
-        h2 {
-            color: #1e455e;
-            font-size: 22px;
-            margin-top: 0;
-            margin-bottom: 15px;
-        }
-
-        ul {
+        .accordion-body ul {
             padding-left: 20px;
         }
 
-        li {
+        .accordion-body li {
             margin-bottom: 10px;
-            font-size: 16px;
+        }
+
+        .accordion-body li:last-child {
+            margin-bottom: 0;
         }
 
         footer {
             text-align: center;
-            margin-top: 50px;
-            padding-top: 25px;
-            font-size: 14px;
-            color: #888;
-            border-top: 1px solid #ddd;
+            margin-top: 60px;
+            padding-top: 30px;
+            font-size: 13px;
+            color: #9ca3af;
+            border-top: 1px solid #e5e7eb;
+            font-family: 'Gowun Batang', serif;
         }
 
         @media (max-width: 600px) {
-            .hero-title h1 { font-size: 28px; }
-            .hero-title p { font-size: 16px; }
+            .hero-title h1 { font-size: 26px; }
+            .hero-title p { font-size: 15px; }
             .main-content { padding: 40px 15px; }
+            .accordion-header { padding: 18px 20px; font-size: 16px; }
+            .accordion-item.active .accordion-content { padding: 20px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- 히어로 섹션 (이미지 배경 + 제목) -->
+    <!-- 히어로 커버 영역 -->
     <div class="hero-section">
         <div class="hero-bg" id="heroBg"></div>
         <div class="hero-overlay"></div>
         <div class="hero-title" id="heroTitle">
             <h1>자궁내막암 건강 회복 가이드북</h1>
-            <p>환자분과 가족분들이 함께 마음을 모아 건강한 일상을 되찾을 수 있도록 돕는 안내서입니다.</p>
+            <p>환자와 가족이 함께하는 건강한 일상 회복 안내서</p>
         </div>
         <div class="scroll-down-arrow">↓</div>
     </div>
 
-    <!-- 스크롤 시 올려오는 본문 컨텐츠 -->
+    <!-- 스크롤시 올라오는 모노톤 토큰(아코디언) 영역 -->
     <main class="main-content">
 
-        <div class="card">
-            <h2>📖 자궁내막암이란?</h2>
-            <p>자궁의 가장 안쪽 막(자궁내막)에 발생하는 암으로, 조기에 발견할 경우 치료 경과가 매우 양호한 편입니다. 규칙적인 검진과 회복 관리가 중요합니다.</p>
+        <!-- 1. 자궁내막암이란? -->
+        <div class="accordion-item">
+            <button class="accordion-header">
+                <span>1. 자궁내막암이란?</span>
+                <span class="accordion-icon">▼</span>
+            </button>
+            <div class="accordion-content">
+                <div class="accordion-body">
+                    <p>자궁의 가장 안쪽 막(자궁내막)에 발생하는 악성 종양입니다. 여성 호르몬 균형의 변화, 비만, 연령 등이 주요 요인으로 알려져 있으며, 질 출혈 등 이상 증상이 비교적 초기에 나타나 조기 발견 시 치료 성과가 매우 우수한 암에 속합니다.</p>
+                </div>
+            </div>
         </div>
 
-        <div class="card">
-            <h2>💊 치료 및 수술 후 회복 관리</h2>
-            <ul>
-                <li><b>충분한 휴식:</b> 수술 후 초기에는 무리한 신체 활동을 피하고 충분한 수면을 취하세요.</li>
-                <li><b>상처 및 출혈 관리:</b> 수술 부위의 이상 유무와 질 출혈 양상을 정기적으로 확인합니다.</li>
-                <li><b>통증 조절:</b> 처방받은 약물을 안내에 따라 규칙적으로 복용하세요.</li>
-            </ul>
+        <!-- 2. 치료 및 수술 후 회복 관리 -->
+        <div class="accordion-item">
+            <button class="accordion-header">
+                <span>2. 치료 및 수술 후 회복 관리</span>
+                <span class="accordion-icon">▼</span>
+            </button>
+            <div class="accordion-content">
+                <div class="accordion-body">
+                    <ul>
+                        <li><b>신체 휴식:</b> 수술 후 4~6주 동안은 무거운 물건 들기나 과도한 신체 활동을 피하고 충분한 수면을 취하세요.</li>
+                        <li><b>상처 및 출혈 관찰:</b> 수술 부위의 발적이나 열감, 이상 질 출혈 양상을 정기적으로 확인합니다.</li>
+                        <li><b>통증 관리:</b> 의료진의 처방에 따라 약물을 복용하고, 통증 변화 양상을 기록해 외래 시 전달합니다.</li>
+                        <li><b>식단 및 일상:</b> 균형 잡힌 영양 섭취와 함께 림프부종 예방을 위해 가벼운 산책부터 시작하는 것이 좋습니다.</li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
-        <div class="card">
-            <h2>👨‍👩‍👧 가족(보호자) 가이드</h2>
-            <ul>
-                <li>환자가 정서적으로 불안해하지 않도록 따뜻한 대화와 경청을 이어가 주세요.</li>
-                <li>외래 진료 및 정기 검진 일정을 함께 챙겨주세요.</li>
-                <li>갑작스러운 고열이나 심한 통증 발생 시 즉시 병원에 연락할 수 있도록 대비합니다.</li>
-            </ul>
+        <!-- 3. 가족 가이드 -->
+        <div class="accordion-item">
+            <button class="accordion-header">
+                <span>3. 가족 가이드</span>
+                <span class="accordion-icon">▼</span>
+            </button>
+            <div class="accordion-content">
+                <div class="accordion-body">
+                    <ul>
+                        <li><b>정서적 지지:</b> 환자가 겪는 불안감과 우울감을 경청하고 신뢰할 수 있는 수용적 환경을 만들어 주세요.</li>
+                        <li><b>치료 일정 동행:</b> 외래 진료, 방사선/항암 치료 일정 및 복약 상태를 함께 점검합니다.</li>
+                        <li><b>응급 상황 대처:</b> 38도 이상의 고열, 심한 하복부 통증, 갑작스러운 대량 출혈 발생 시 즉시 병원 응급실로 내원할 준비를 해두세요.</li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
         <footer>
-            <p>© 2026 자궁내막암 환자/가족 교육 가이드. All rights reserved.</p>
+            <p>© 2026 자궁내막암 환자 및 가족 교육 가이드. All rights reserved.</p>
         </footer>
 
     </main>
 
-    <!-- 스크롤 시 이미지가 불투명해지도록 제어하는 자바스크립트 -->
+    <!-- 스크롤 투명도 및 토큰 동작 자바스크립트 -->
     <script>
+        // 1. 스크롤 투명도 제어
         const heroBg = document.getElementById('heroBg');
         const heroTitle = document.getElementById('heroTitle');
 
@@ -219,15 +293,31 @@
             const scrollPosition = window.scrollY;
             const windowHeight = window.innerHeight;
 
-            // 스크롤 양에 따른 투명도 계산 (0 ~ 1)
-            let opacity = 1 - (scrollPosition / (windowHeight * 0.8));
+            let opacity = 1 - (scrollPosition / (windowHeight * 0.7));
             if (opacity < 0) opacity = 0;
 
-            // 배경 이미지 투명도 조절
             heroBg.style.opacity = opacity;
-            
-            // 타이틀도 같이 천천히 흐려짐
             heroTitle.style.opacity = opacity;
+        });
+
+        // 2. 토큰(아코디언) 클릭 열림/닫힘 제어
+        const accordionHeaders = document.querySelectorAll('.accordion-header');
+
+        accordionHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                const item = header.parentElement;
+                const content = item.querySelector('.accordion-content');
+
+                // 이미 열려있는 경우 닫기
+                if (item.classList.contains('active')) {
+                    item.classList.remove('active');
+                    content.style.maxHeight = null;
+                } else {
+                    // 열고자 하는 토큰의 높이를 계산하여 펼침
+                    item.classList.add('active');
+                    content.style.maxHeight = content.scrollHeight + "px";
+                }
+            });
         });
     </script>
 
