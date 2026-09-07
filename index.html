@@ -46,7 +46,6 @@
             left: 0;
             width: 100%;
             height: 100vh;
-            /* 새 이미지 직접 링크 주소 적용 */
             background-image: url('https://i.ibb.co/7t7JfJfB/image.jpg');
             background-size: cover;
             background-position: center;
@@ -162,7 +161,7 @@
         .accordion-content {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.3s ease-out, padding 0.3s ease;
+            transition: max-height 0.35s cubic-bezier(0, 1, 0, 1), padding 0.3s ease;
             background-color: #fafafa;
             border-top: 1px solid transparent;
         }
@@ -304,11 +303,22 @@
                 const content = item.querySelector('.accordion-content');
 
                 if (item.classList.contains('active')) {
-                    item.classList.remove('active');
-                    content.style.maxHeight = null;
+                    // 닫을 때: 현재 실제 높이를 잡은 후 0으로 줄임
+                    content.style.maxHeight = content.scrollHeight + "px";
+                    setTimeout(() => {
+                        item.classList.remove('active');
+                        content.style.maxHeight = null;
+                    }, 10);
                 } else {
+                    // 열 때: 높이를 계산해 펼치고, 완료 후 제한(none)을 풀어 잘림 방지
                     item.classList.add('active');
                     content.style.maxHeight = content.scrollHeight + "px";
+                    
+                    setTimeout(() => {
+                        if (item.classList.contains('active')) {
+                            content.style.maxHeight = 'none';
+                        }
+                    }, 350); // 애니메이션 완료 시점
                 }
             });
         });
