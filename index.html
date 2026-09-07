@@ -3,377 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Curtain Call Archive</title>
+    <title>자궁내막암 환자 및 가족을 위한 건강 회복 가이드</title>
     <style>
-        /* ==========================================
-           1. 전체 레이아웃 & 기본 배경 (커튼 열리면 흰색으로)
-           ========================================== */
         body {
-            margin: 0;
-            padding: 0;
-            background-color: #ffffff; 
-            font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
-            color: #000000; 
-            overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            position: relative;
-        }
-
-        /* ==========================================
-           2. 완벽한 블랙 단색 커튼
-           ========================================== */
-        .curtain-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            z-index: 5;
-            pointer-events: none;
-        }
-
-        .curtain-left, .curtain-right {
-            width: 50%;
-            height: 100%;
-            background: #0d0d0d; 
-            transition: transform 1.3s cubic-bezier(0.25, 1, 0.5, 1), opacity 1s ease-out;
-        }
-
-        body.light-on .curtain-left { transform: translateX(-100%); opacity: 0; }
-        body.light-on .curtain-right { transform: translateX(100%); opacity: 0; }
-
-        /* ==========================================
-           3. 반전형 조명 스위치 (형광 민트 포인트 유지)
-           ========================================== */
-        .switch-container {
-            text-align: center;
-            cursor: pointer;
-            z-index: 15;
-            background: none;
-            border: none;
-            padding: 15px;
-            outline: none;
-            margin-bottom: 40px;
-        }
-
-        .switch-container svg {
-            stroke: #4af6c3; 
-            stroke-width: 1.8;
-            fill: none;
-            filter: drop-shadow(0 0 5px rgba(74, 246, 195, 0.6));
-            transition: stroke 0.5s ease, filter 0.4s ease;
-        }
-
-        .switch-container.active svg {
-            stroke: #000000; 
-            filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.3)) drop-shadow(0 0 15px rgba(74, 246, 195, 0.4));
-        }
-
-        /* ==========================================
-           4. 카테고리 영역 & 모바일 최적화 (한 줄 고정)
-           ========================================== */
-        .category-zone {
-            opacity: 0;
-            transform: translateY(15px);
-            width: 95%;
-            max-width: 700px;
-            text-align: center;
-            transition: opacity 1s ease, transform 1s ease;
-            z-index: 2;
-            visibility: hidden;
-            padding: 0 10px;
-            box-sizing: border-box;
-        }
-
-        body.light-on .category-zone {
-            opacity: 1;
-            transform: translateY(0);
-            visibility: visible;
-        }
-
-        .category-flex {
-            display: flex;
-            justify-content: center;
-            gap: 50px; 
-            flex-wrap: nowrap; 
-            margin-bottom: 40px;
-            width: 100%;
-        }
-
-        .category-icon-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 10px;
-            transition: all 0.3s ease;
-            outline: none;
-            flex-shrink: 1; 
-        }
-
-        .category-icon-btn svg {
-            stroke: #b0b0b0; 
-            stroke-width: 1.8;
-            fill: none; 
-            transition: all 0.3s ease;
-            width: 55px;  
-            height: 55px;
-        }
-
-        .category-icon-btn:hover svg, .category-icon-btn.selected svg {
-            stroke: #4af6c3;
-            filter: drop-shadow(0 0 6px rgba(74, 246, 195, 0.8)) drop-shadow(0 0 15px rgba(74, 246, 195, 0.3));
-            transform: scale(1.1);
-        }
-
-        @media (max-width: 480px) {
-            .category-flex { gap: 20px; }
-            .category-icon-btn svg { width: 42px; height: 42px; }
-            .switch-container { margin-bottom: 25px; }
-        }
-
-        /* ==========================================
-           5. 하단 원페이지 문서 서식 (흰색 배경 + 외곽선만 적용)
-           ========================================== */
-        .character-list-section {
-            display: none;
-            background: #ffffff; /* 안쪽은 그냥 흰색으로 변경 */
-            border: 1px solid #ccd0d4; /* 깔끔한 회색 외곽선만 유지 */
-            padding: 25px;
-            border-radius: 8px;
-            text-align: left;
-            margin-top: 20px;
-            box-shadow: none; /* 그림자 제거하여 완전 플랫하게 처리 */
-            animation: slideFadeIn 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-            box-sizing: border-box;
-        }
-
-        @keyframes slideFadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .wiki-center-icon {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #e0e0e0;
-        }
-
-        .wiki-center-icon svg {
-            stroke: #4af6c3; 
-            stroke-width: 1.8;
-            fill: none;
-            filter: drop-shadow(0 0 4px rgba(74, 246, 195, 0.6)); 
-        }
-
-        .wiki-table {
-            width: 100%;
-            max-width: 420px;
-            margin: 0 auto 25px auto; 
-            border-collapse: collapse;
-            border: 1px solid #ccd0d4;
-            font-size: 14px;
-        }
-
-        .wiki-table th {
-            background: #eeeeee; 
-            color: #000000; 
-            padding: 9px;
-            font-weight: bold;
-            border: 1px solid #ccd0d4;
-            width: 30%;
-            text-align: center;
-        }
-
-        .wiki-table td {
-            background: #ffffff;
-            color: #333333;
-            padding: 9px;
-            border: 1px solid #ccd0d4;
-        }
-
-        .wiki-heading {
-            font-size: 18px;
-            color: #000000;
-            border-left: 4px solid #4af6c3; 
-            padding-left: 10px;
-            margin: 25px 0 12px 0;
-            font-weight: bold;
-            text-shadow: 0 0 4px rgba(74, 246, 195, 0.2);
-        }
-
-        .wiki-content {
-            font-size: 14px;
+            font-family: 'Malgun Gothic', 'Noto Sans KR', sans-serif;
             line-height: 1.6;
-            color: #222222;
-            margin-bottom: 15px;
-            padding-left: 5px;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9fbfd;
         }
-
-        .highlight-neon {
-            color: #2bbd92; 
-            font-weight: bold;
-            text-shadow: 0 0 4px rgba(74, 246, 195, 0.4);
+        header {
+            background-color: #e8f4f8;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            border-bottom: 3px solid #89c4d9;
+            margin-bottom: 30px;
+        }
+        h1 { color: #2c5d73; font-size: 24px; margin-bottom: 10px; }
+        .intro { font-size: 15px; color: #555; }
+        .card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-left: 5px solid #89c4d9;
+        }
+        h2 { color: #2c5d73; font-size: 18px; margin-top: 0; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 8px; }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            font-size: 13px;
+            color: #888;
+            border-top: 1px solid #eee;
         }
     </style>
 </head>
 <body>
 
-    <div class="curtain-container">
-        <div class="curtain-left"></div>
-        <div class="curtain-right"></div>
+    <header>
+        <h1>자궁내막암 건강 회복 가이드북</h1>
+        <p class="intro">환자분과 가족분들이 함께 마음을 모아 건강한 일상을 되찾을 수 있도록 돕는 안내서입니다.</p>
+    </header>
+
+    <div class="card">
+        <h2>📖 자궁내막암이란?</h2>
+        <p>자궁의 가장 안쪽 막(자궁내막)에 발생하는 암으로, 조기에 발견할 경우 치료 경과가 매우 양호한 편입니다. 규칙적인 검진과 회복 관리가 중요합니다.</p>
     </div>
 
-    <button class="switch-container" id="lampSwitch" onclick="toggleStage()">
-        <svg width="65" height="65" viewBox="0 0 80 80">
-            <line x1="10" y1="10" x2="70" y2="10" />
-            <line x1="40" y1="10" x2="40" y2="35" />
-            <path d="M28,35 L52,35 L48,50 L32,50 Z" />
-            <line x1="32" y1="50" x2="48" y2="50" />
-        </svg>
-    </button>
-
-    <div class="category-zone" id="categoryZone">
-        <div class="category-flex">
-            
-            <button class="category-icon-btn" id="btn-cat1" onclick="showCategory('cat1')">
-                <svg viewBox="0 0 60 60">
-                    <circle cx="30" cy="30" r="25" />
-                    <path d="M13,17 C21,23 21,37 13,43" />
-                    <path d="M47,17 C39,23 39,37 47,43" />
-                </svg>
-            </button>
-
-            <button class="category-icon-btn" id="btn-cat2" onclick="showCategory('cat2')">
-                <svg viewBox="0 0 60 60">
-                    <circle cx="30" cy="30" r="13" />
-                    <path d="M30,6 L30,12 M30,48 L30,54 M6,30 L12,30 M48,30 L54,30 M14,14 L18,18 M42,42 L46,46 M14,42 L18,38 M42,14 L46,18" />
-                </svg>
-            </button>
-
-            <button class="category-icon-btn" id="btn-cat3" onclick="showCategory('cat3')">
-                <svg viewBox="0 0 60 60">
-                    <path d="M12,32 C12,16 48,16 48,32 Z" />
-                    <path d="M23,32 L23,48 C23,52 37,52 37,48 L37,32" />
-                    <line x1="12" y1="32" x2="48" y2="32" />
-                </svg>
-            </button>
-
-            <button class="category-icon-btn" id="btn-cat4" onclick="showCategory('cat4')">
-                <svg viewBox="0 0 60 60">
-                    <circle cx="30" cy="30" r="25" />
-                    <line x1="5" y1="30" x2="55" y2="30" />
-                    <circle cx="30" cy="30" r="8" style="stroke-width: 1.8;" />
-                    <circle cx="30" cy="30" r="3" />
-                </svg>
-            </button>
-
-        </div>
-
-        <div class="character-list-section" id="list-cat1">
-            <div class="wiki-center-icon">
-                <svg width="50" height="50" viewBox="0 0 60 60"><circle cx="30" cy="30" r="25" /><path d="M13,17 C21,23 21,37 13,43" /><path d="M47,17 C39,23 39,37 47,43" /></svg>
-            </div>
-            <table class="wiki-table">
-                <tr><th>이름</th><td>캐릭터 이름 입력</td></tr>
-                <tr><th>소속</th><td>여기에 소속 입력</td></tr>
-                <tr><th>상태</th><td>활동 가능 / 불명</td></tr>
-            </table>
-            <div class="wiki-heading">1. 개요</div>
-            <div class="wiki-content">내용을 입력하세요. 강조가 필요하면 <span class="highlight-neon">이곳에 핵심 대사</span>를 넣습니다.</div>
-            <div class="wiki-heading">2. 세부 설정</div>
-            <div class="wiki-content">내용을 입력하세요.</div>
-        </div>
-
-        <div class="character-list-section" id="list-cat2">
-            <div class="wiki-center-icon">
-                <svg width="50" height="50" viewBox="0 0 60 60"><circle cx="30" cy="30" r="13" /><path d="M30,6 L30,12 M30,48 L30,54 M6,30 L12,30 M48,30 L54,30 M14,14 L18,18 M42,42 L46,46 M14,42 L18,38 M42,14 L46,18" /></svg>
-            </div>
-            <table class="wiki-table">
-                <tr><th>이름</th><td>캐릭터 이름 입력</td></tr>
-                <tr><th>소속</th><td>여기에 소속 입력</td></tr>
-            </table>
-            <div class="wiki-heading">1. 개요</div>
-            <div class="wiki-content">내용을 입력하세요.</div>
-        </div>
-
-        <div class="character-list-section" id="list-cat3">
-            <div class="wiki-center-icon">
-                <svg width="50" height="50" viewBox="0 0 60 60"><path d="M12,32 C12,16 48,16 48,32 Z" /><path d="M23,32 L23,48 C23,52 37,52 37,48 L37,32" /><line x1="12" y1="32" x2="48" y2="32" /></svg>
-            </div>
-            <table class="wiki-table">
-                <tr><th>이름</th><td>캐릭터 이름 입력</td></tr>
-                <tr><th>소속</th><td>여기에 소속 입력</td></tr>
-            </table>
-            <div class="wiki-heading">1. 개요</div>
-            <div class="wiki-content">내용을 입력하세요.</div>
-        </div>
-
-        <div class="character-list-section" id="list-cat4">
-            <div class="wiki-center-icon">
-                <svg width="50" height="50" viewBox="0 0 60 60"><circle cx="30" cy="30" r="25" /><line x1="5" y1="30" x2="55" y2="30" /><circle cx="30" cy="30" r="8" style="stroke-width: 1.8;" /><circle cx="30" cy="30" r="3" /></svg>
-            </div>
-            <table class="wiki-table">
-                <tr><th>이름</th><td>캐릭터 이름 입력</td></tr>
-                <tr><th>소속</th><td>여기에 소속 입력</td></tr>
-            </table>
-            <div class="wiki-heading">1. 개요</div>
-            <div class="wiki-content">내용을 입력하세요.</div>
-        </div>
-
+    <div class="card">
+        <h2>💊 치료 및 수술 후 회복 관리</h2>
+        <ul>
+            <li><b>충분한 휴식:</b> 수술 후 초기에는 무리한 신체 활동을 피하고 충분한 수면을 취하세요.</li>
+            <li><b>상처 및 출혈 관리:</b> 수술 부위의 이상 유무와 질 출혈 양상을 정기적으로 확인합니다.</li>
+            <li><b>통증 조절:</b> 처방받은 약물을 안내에 따라 규칙적으로 복용하세요.</li>
+        </ul>
     </div>
 
-    <script>
-        function toggleStage() {
-            const body = document.body;
-            const lampSwitch = document.getElementById('lampSwitch');
-            
-            if(body.classList.contains('light-on')) {
-                body.classList.remove('light-on');
-                lampSwitch.classList.remove('active');
-                
-                // 메인 스위치를 꺼서 커튼을 닫으면 열려있던 문서와 선택 상태도 전부 초기화
-                const allLists = document.querySelectorAll('.character-list-section');
-                allLists.forEach(list => list.style.display = 'none');
-                const allCards = document.querySelectorAll('.category-icon-btn');
-                allCards.forEach(card => card.classList.remove('selected'));
-            } else {
-                body.classList.add('light-on');
-                lampSwitch.classList.add('active');
-            }
-        }
+    <div class="card">
+        <h2>👨‍👩‍👧 가족(보호자) 가이드</h2>
+        <ul>
+            <li>환자가 정서적으로 불안해하지 않도록 따뜻한 대화와 경청을 이어가 주세요.</li>
+            <li>외래 진료 및 정기 검진 일정을 함께 챙겨주세요.</li>
+            <li>갑작스러운 고열이나 심한 통증 발생 시 즉시 병원에 연락할 수 있도록 대비합니다.</li>
+        </ul>
+    </div>
 
-        function showCategory(categoryId) {
-            const currentBtn = document.getElementById('btn-' + categoryId);
-            const targetList = document.getElementById('list-' + categoryId);
+    <footer>
+        <p>© 2026 자궁내막암 환자/가족 교육 가이드. All rights reserved.</p>
+    </footer>
 
-            // [핵심 로직] 이미 선택된 아이콘을 다시 누른 경우 -> 끄기 (Off)
-            if (currentBtn.classList.contains('selected')) {
-                currentBtn.classList.remove('selected');
-                if (targetList) targetList.style.display = 'none';
-                return; // 함수 종료
-            }
-
-            // 새로운 아이콘을 누른 경우 -> 기존에 켜져있던 것들 싹 지우고 새로 켜기 (On)
-            const allLists = document.querySelectorAll('.character-list-section');
-            allLists.forEach(list => list.style.display = 'none');
-
-            const allCards = document.querySelectorAll('.category-icon-btn');
-            allCards.forEach(card => card.classList.remove('selected'));
-
-            if (targetList) {
-                targetList.style.display = 'block';
-                currentBtn.classList.add('selected');
-                targetList.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-    </script>
 </body>
 </html>
