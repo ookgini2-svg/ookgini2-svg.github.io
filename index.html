@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>자궁내막암 건강 회복 가이드북</title>
     
-    <!-- Google Fonts -->
+    <!-- Google Fonts: 명조체 'Gowun Batang' 단일 연결 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
         * {
@@ -17,11 +17,15 @@
             padding: 0;
         }
 
+        /* 전체 명조체(Gowun Batang) 일괄 적용 */
+        body, button, input, select, textarea, h1, h2, h3, p, li, span, div, footer {
+            font-family: 'Gowun Batang', serif !important;
+        }
+
         body {
-            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Malgun Gothic', 'Noto Sans KR', sans-serif;
             line-height: 1.8;
             color: #2c2c2c;
-            background-color: #f2f3f5; /* 모노톤 기본 배경 */
+            background-color: #f2f3f5;
         }
 
         /* 1. 히어로 Cover 영역 */
@@ -42,16 +46,16 @@
             left: 0;
             width: 100%;
             height: 100vh;
-            background-image: url('https://i.ibb.co/0R6MQ7HK/image.jpg');
+            /* 새 이미지 직접 링크 주소 적용 */
+            background-image: url('https://i.ibb.co/7t7JfJfB/image.jpg');
             background-size: cover;
             background-position: center;
             z-index: -1;
-            filter: grayscale(10%); /* 이미지 톤을 약간 억제 */
+            filter: grayscale(15%);
             will-change: opacity;
             transition: opacity 0.1s linear;
         }
 
-        /* 흑백/회색톤 오버레이 */
         .hero-overlay {
             position: absolute;
             top: 0;
@@ -76,7 +80,6 @@
         }
 
         .hero-title p {
-            font-family: 'Gowun Batang', serif;
             font-size: 17px;
             color: #d1d5db;
         }
@@ -102,7 +105,7 @@
         .main-content {
             position: relative;
             z-index: 2;
-            background-color: #f2f3f5; /* 모노톤 회색 배경 */
+            background-color: #f2f3f5;
             padding: 70px 20px;
             max-width: 800px;
             margin: 0 auto;
@@ -125,7 +128,6 @@
             border-color: #9ca3af;
         }
 
-        /* 토큰 제목 버튼 */
         .accordion-header {
             width: 100%;
             padding: 22px 28px;
@@ -133,9 +135,8 @@
             border: none;
             outline: none;
             text-align: left;
-            font-family: 'Pretendard', sans-serif;
-            font-size: 18px;
-            font-weight: 600;
+            font-size: 19px;
+            font-weight: 700;
             color: #1f2937;
             cursor: pointer;
             display: flex;
@@ -148,9 +149,8 @@
             background-color: #f9fafb;
         }
 
-        /* 펼침/접힘 화살표 표시 */
         .accordion-icon {
-            font-size: 14px;
+            font-size: 13px;
             color: #6b7280;
             transition: transform 0.3s ease;
         }
@@ -159,7 +159,6 @@
             transform: rotate(180deg);
         }
 
-        /* 토큰 내부 서브 내용 */
         .accordion-content {
             max-height: 0;
             overflow: hidden;
@@ -176,10 +175,9 @@
         .accordion-body p, 
         .accordion-body li, 
         .accordion-body div {
-            font-family: 'Gowun Batang', serif;
-            font-size: 15px;
+            font-size: 16px;
             color: #374151;
-            line-height: 1.8;
+            line-height: 1.85;
         }
 
         .accordion-body ul {
@@ -201,14 +199,13 @@
             font-size: 13px;
             color: #9ca3af;
             border-top: 1px solid #e5e7eb;
-            font-family: 'Gowun Batang', serif;
         }
 
         @media (max-width: 600px) {
             .hero-title h1 { font-size: 26px; }
             .hero-title p { font-size: 15px; }
             .main-content { padding: 40px 15px; }
-            .accordion-header { padding: 18px 20px; font-size: 16px; }
+            .accordion-header { padding: 18px 20px; font-size: 17px; }
             .accordion-item.active .accordion-content { padding: 20px; }
         }
     </style>
@@ -285,7 +282,6 @@
 
     <!-- 스크롤 투명도 및 토큰 동작 자바스크립트 -->
     <script>
-        // 1. 스크롤 투명도 제어
         const heroBg = document.getElementById('heroBg');
         const heroTitle = document.getElementById('heroTitle');
 
@@ -300,7 +296,6 @@
             heroTitle.style.opacity = opacity;
         });
 
-        // 2. 토큰(아코디언) 클릭 열림/닫힘 제어
         const accordionHeaders = document.querySelectorAll('.accordion-header');
 
         accordionHeaders.forEach(header => {
@@ -308,12 +303,10 @@
                 const item = header.parentElement;
                 const content = item.querySelector('.accordion-content');
 
-                // 이미 열려있는 경우 닫기
                 if (item.classList.contains('active')) {
                     item.classList.remove('active');
                     content.style.maxHeight = null;
                 } else {
-                    // 열고자 하는 토큰의 높이를 계산하여 펼침
                     item.classList.add('active');
                     content.style.maxHeight = content.scrollHeight + "px";
                 }
